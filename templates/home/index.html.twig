@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% set currentUrl = url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+{% block head %}
+{# Instagram #}
+<meta property="og:title" content="{{ post.metaTitle ?? '' }}">
+<meta property="og:description" content="{{ post.metaDescription ?? '' }}">
+<meta property="og:url" content="{{ currentUrl }}">
+<meta property="og:type" content="website">
+{# Fin Instagram #}
+
+<meta name="description" content="{{ post.metaDescription ?? '' }}">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Tunkal",
+    "description": "{{ post.metaDescription ?? '' }}",
+    "logo": {
+        "@type": "ImageObject",
+        "url": "{{ asset('images/logo.webp') }}"
+    },
+    "image": {
+        "@type": "ImageObject",
+        "url": "{{ asset('images/photo.webp') }}"
+    },
+    "url": "{{ currentUrl }}",
+    "genre": [
+        "Metal",
+        "Death Metal",
+        "Thrash Metal"
+    ],
+    "sameAs": [
+    {% for link in links()|filter( link => link.position == 'header' ) %}
+        "{{ link.hyperlink }}"{{ loop.last ? '' : ',' }}
+    {% endfor %}
+    ],
+    "foundingLocation": {
+        "@type": "Country",
+        "name": "France"
+    },
+    "foundingDate": "2018",
+    "track": [
+    {% for link in links()|filter( link =>  link.position == 'media' ) %}
+    {
+        {% if link.isVideo == false %}
+        "@type": "MusicRecording",
+        "audio": "{{ link.hyperlink }}",
+        "name": "{{ link.content }}",
+        "url": "{{ link.hyperlink }}"   
+        {% else %}
+        "@type": "VideoObject",
+        "name": "{{ link.title }}",
+        "description": "{{ link.content }}",
+        "embedUrl": "{{ link.hyperlink }}",
+		"thumbnailUrl":"{{ asset('images/' ~ link.image )|imagine_filter('min300') }}",
+        "uploadDate":"{{ link.uploadedAt|date("c") }}"
+        {% endif %}
+    }{{ loop.last ? '' : ',' }}
+    {% endfor %}
+    ],
+    "member": [
+        {
+        "@type": "OrganizationRole",
+        "member": {
+            "@type": "Person",
+            "name": "Tunkal"
+        },
+        "startDate": "2018",
+        "roleName": "guitar"
+        }
+    ]
+}
+</script>
+{% endblock %}
+
+{% block title %}{{ post.metaTitle ?? '' }}{% endblock %}
+
+{% block body %}
+
+    <article class="index">
+        <h2>{{ post.title ?? '' }}</h2>
+        <div>
+            <div>{{ post.content|raw }}</div>
+            {# Illustration article #}
+            {% for image in post.images %}
+                <img class="hover-shadow" data-currentslide="{{ loop.index0 }}"
+                src="{{  asset('images/' ~ image.name )|imagine_filter('min300') }}" alt="{{ post.metaTitle ?? '' }}" data-image-path="{{ asset('images/' ~ image.name ) }}" >
+            {% endfor %}
+            {# Fin Illustration article #}        
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <div class="mySlides">
+                <img src="{{ post.images[0].name ? asset('images/' ~ post.images[0].name )|imagine_filter('min300') : '' }}" alt="{{ post.metaTitle ?? '' }}">
+            </div>
+            <!-- Next/previous controls -->
+            {% if post.images|length > 1 %}
+                <span class="prev" data-plus="-1">&#10094;</span>
+                <span class="next" data-plus="1">&#10095;</span>            
+            {% endif %}
+
+        </div> 
+
+        {# <p class="keywords">
+            {% for keyword in post.keywords %}
+                #<strong>{{ keyword }}</strong>
+            {% endfor %}
+        </p> #}
+    </article>
+
+    <section class="tracks">
+        <h2>Listen Tunkal music on Youtube : </h2>
+        <ul>
+            {% for link in mediaLinks|filter( link => link.isVideo == true ) %}
+            <li>
+                <a class="player" href="#" title="watch {{ link.title }} on Youtube" id="player{{ loop.index0 }}" data-videoid="{{ link.hyperlink }}">
+                    <img class="video" src="{{ asset('images/' ~ link.image )|imagine_filter('min300') }}" alt="Thumbnail of {{ link.title }} video">
+                    <img src="{{ asset('images/YouTube_23392.ico') }}" alt="logo Youtube">
+                </a>
+            </li>
+            {% endfor %}	
+        </ul>
+        <ul>
+            {% for link in mediaLinks|filter( link => link.isVideo == false ) %}
+            <li>
+                <a href="{{ link.hyperlink }}" title="{{ link.title }}" target="_blank"><img src="{{ asset('images/YouTube_23392.ico') }}" alt="logo Youtube">&nbsp;{{ link.content }}</a> 
+            </li>
+            {% endfor %}	
+        </ul>
+        <div>
+            <a href="{{ copyrightLink.hyperlink }}" title="{{ copyrightLink.title }}" target="_blank">{{ copyrightLink.content|raw }}</a>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://s.ytimg.com/yts/jsbin/www-widgetapi-vfl7r2f24/www-widgetapi.js" async defer></script>
+    {{ encore_entry_script_tags('loadvideo') }}
+{% endblock %}

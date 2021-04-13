@@ -1,0 +1,106 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Concert <span class="font-italic">"{{ show.title }}"</span>{% endblock %}
+
+{% block body %}
+	<!-- Content Header (Page header) -->
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Concert <span class="font-italic">"{{ show.title }}"</span></h1>
+				</div>
+				<!-- /.col -->
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+						<li class="breadcrumb-item">
+							<a href="{{ path('admin') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active">Concerts</li>
+					</ol>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
+	</div>
+	<!-- /.content-header -->
+
+	<!-- Main content -->
+	<div class="content">
+		<div class="container-fluid">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Title</th>
+                        <td>{{ show.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Location</th>
+                        <td>{{ show.location }}</td>
+                    </tr>
+                    <tr>
+                        <th>MetaDescription</th>
+                        <td>{{ show.metaDescription }}</td>
+                    </tr>
+                    <tr>
+                        <th>MetaTitle</th>
+                        <td>{{ show.metaTitle }}</td>
+                    </tr>
+                    <tr>
+                        <th>Expected_at</th>
+                        <td>{{ show.expectedAt ? show.expectedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Image</th>
+                        <td>
+                        	<img src="{{ asset('images/'~ show.image ) | imagine_filter('min300') }}" alt="Image associé au concert {{ show.title }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Updated_at</th>
+                        <td>{{ show.updatedAt ? show.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ show.description|raw }}</td>
+                    </tr>
+                    <tr>
+						<th>Mots-clés en méta donnée</th>
+						<td>
+							{% for metaKeyword in show.metaKeywords %}
+								#{{ metaKeyword }}
+							{% else %}
+								Pas de mot-clés pour ce concert
+							{% endfor %}
+						</td>
+                    </tr>
+                    <tr>
+						<th>Mots-clés</th>
+						<td>
+							{% for keyWord in show.keywords %}
+								#{{ keyWord }}
+							{% else %}
+								Pas de mot-clés pour ce concert
+							{% endfor %}
+						</td>
+                    </tr>
+                    <tr>
+                        <th>Is_past</th>
+                        <td>A developper</td>
+                    </tr>
+                    <tr>
+						<th>Slug</th>
+						<td>{{ show.slug }}</td>
+					</tr>
+                </tbody>
+            </table>
+
+            <a href="{{ path('shows_index') }}">back to list</a>
+
+            <a href="{{ path('shows_edit', {'id': show.id}) }}">edit</a>
+
+            {{ include('shows/_delete_form.html.twig') }}
+{% endblock %}

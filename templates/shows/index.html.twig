@@ -1,0 +1,93 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Index des concerts{% endblock %}
+
+{% block body %}
+	<!-- Content Header (Page header) -->
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Index des concerts</h1>
+				</div>
+				<!-- /.col -->
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+						<li class="breadcrumb-item">
+							<a href="{{ path('admin') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active">Concerts</li>
+					</ol>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
+	</div>
+	<!-- /.content-header -->
+
+	<!-- Main content -->
+	<div class="content">
+		<div class="container-fluid">
+
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success" role="alert">{{ message }}</div>
+			{% endfor %}
+
+			{% for message in app.flashes('fail') %}
+				<div class="alert alert-warning" role="alert">{{ message }}</div>
+			{% endfor %}
+
+            <a href="{{ path('shows_new') }}" class="btn btn-success my-5">Create new</a>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                        {{ knp_pagination_sortable(shows, 'Titre', 'title') }}
+                        </th>
+                        <th>
+                        {{ knp_pagination_sortable(shows, 'Lieu', 'location') }}
+                        </th>
+                        <th>
+                        {{ knp_pagination_sortable(shows, 'Quand', 'expected_at') }}
+                        </th>
+                        <th>
+                        {{ knp_pagination_sortable(shows, 'Modifié le', 'updated_at') }}
+                        </th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for show in shows %}
+                    <tr>
+                        <td>{{ show.title }}</td>
+                        <td>{{ show.location }}</td>
+                        <td>{{ show.expectedAt ? show.expectedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ show.updatedAt ? show.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('shows_show', {'id': show.id}) }}">show</a>
+                            <a href="{{ path('shows_edit', {'id': show.id}) }}">edit</a>
+                            {{ include('shows/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+				<div>
+					{{ knp_pagination_render(shows) }}
+				</div>
+			</table>
+			<div>
+				{{ knp_pagination_render(shows) }}
+			</div>
+
+            <a href="{{ path('shows_new') }}" class="btn btn-success my-5">Create new</a>
+
+		</div>
+	</div>
+{% endblock %}

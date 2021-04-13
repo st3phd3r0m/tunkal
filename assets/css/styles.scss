@@ -1,0 +1,571 @@
+@font-face {
+    font-family: 'PainttheSky';
+    src: url('PainttheSky-Regular.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    width: 100%;
+    font-size: 200%;
+    font-family: 'PainttheSky', Chiller;
+    /*ar darling*/
+    color: white;
+    background-color: #001e1e;
+
+    header {
+        img {
+            display: block;
+            width: 100%;
+            margin: auto;
+        }
+
+        h1 {
+            position: relative;
+            bottom: 12vw;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 7.5vw;
+            font-family: Helvetica, sans-serif;
+            text-shadow: 0px 0px 1.5vw #00ffff;
+            color: black;
+        }
+
+        .socNetWork {
+            text-align: center;
+            position: relative;
+            bottom: 12vw;
+
+            a {
+                color: white;
+                font-size: 12vw;
+                margin: 0 5vw 0 5vw;
+
+                &:hover {
+                    color: #00caca;
+                }
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            img {
+                width: 50%;
+            }
+
+            h1 {
+                position: unset;
+                bottom: 0;
+                font-size: 3rem;
+                margin: 0;
+            }
+
+            .socNetWork {
+                position: unset;
+                bottom: 0;
+                margin-bottom: 20px;
+
+                a {
+                    font-size: 3rem;
+                }
+            }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+
+            //Hamburger sur vue mobile
+            >span {
+                float: right;
+
+                //caractere de font awesome
+                .fa-bars {
+                    display: inline-block;
+                    margin-top: 10px;
+                    margin-right: 20px;
+                    font-size: 2rem;
+
+                    color: white;
+                    border-radius: 5px;
+
+                    &:hover {
+                        box-shadow: 0 0 10px #00ffff;
+                        background-color: #008888;
+                    }
+
+                    @media screen and (min-width: 768px) {
+                        font-size: 3rem;
+                    }
+                }
+            }
+
+            // Fin Hamburger sur vue mobile
+
+            .menuPrincipal {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                display: none;
+                margin: 0;
+                // width: 150px;
+                text-align: right;
+
+                background-color: rgb(150, 150, 150);
+
+                a {
+                    display: block;
+                    color: #f2f2f2;
+                    text-decoration: none;
+                    font-size: 2rem;
+                    margin: 0;
+                    padding: 10px;
+                    border: 1px solid grey;
+
+                    &:not(.active):hover {
+                        background-color: #ddd;
+                        color: black;
+                    }
+                }
+            }
+
+            @media screen and (min-width: 992px) {
+                position: static;
+
+                >span {
+                    display: none;
+                }
+
+                >.menuPrincipal {
+                    display: block;
+                    position: static;
+                    text-align: center;
+                    background-color: #001e1e;
+                    margin: 20px 0 20px 0;
+
+                    >a {
+                        display: inline;
+                        font-size: 3rem;
+                        border: none;
+                        color: #00e2e2;
+                        margin: 0 10px 0 10px;
+                    }
+                }
+            }
+
+        }
+    }
+
+    #scroll {
+        position: fixed;
+        top: 80%;
+        right: 0%;
+        z-index: 1;
+
+        .fa-chevron-circle-up {
+            margin-right: 20px;
+            font-size: 2rem;
+            text-decoration: none;
+            color: white;
+
+            &:hover {
+                box-shadow: 0 0 10px #00ffff;
+                background-color: #008888;
+            }
+
+            @media screen and (min-width: 768px) {
+                font-size: 3rem;
+            }
+        }
+    }
+
+    main {
+
+        .form-error-icon {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .success, .form-error-message {
+            position: fixed;
+            width: 25%;
+            border-radius: 5px;
+            padding: 15px;
+            font-weight: 600;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .form-error-message {
+            background-color: rgb(255, 220, 154);
+            color: rgb(168, 109, 0);
+        }
+
+        .success {
+            background-color: rgb(154, 255, 196);
+            color: rgb(0, 144, 72);
+        }
+
+        margin: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding: 0 30px 0 30px;
+
+        h2 {
+            margin: 0;
+            text-align: center;
+            line-height: 2.2rem;
+
+            @media screen and (min-width: 768px) {
+                margin: 10px 0 10px 0;
+            }
+        }
+
+        /* Fenetre modal et diaporama ***********************************/
+        >article {
+
+            border-top: 1px dashed white;
+            border-bottom: 1px dashed white;
+
+            >div {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1.2rem;
+            }
+
+            /* The Modal (background) */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.815);
+            }
+
+            /* The Close Button */
+            .close {
+                color: white;
+                background-color: black;
+                position: absolute;
+                float: right;
+                right: 15px;
+                font-size: 50px;
+                font-weight: bold;
+                z-index: 10;
+            }
+
+            /* Hide the slides by default */
+            .mySlides {
+                display: none;
+                position: relative;
+                top: 50%;
+                transform: translate(0, -50%);
+
+                >img{
+                    display: block;
+                    margin: auto;
+                    width: 90vw;
+                    height: 90vh;
+                    object-fit: contain;
+                }
+            }
+
+            /* Next & previous buttons */
+            .prev,
+            .next {
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                width: auto;
+                margin-top: -50px;
+                padding: 10px;
+                color: white;
+                background-color: black;
+                font-weight: bold;
+                font-size: 40px;
+                transition: 0.6s ease;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+
+            /* Position the "next button" to the right */
+            .next {
+                right: 0;
+            }
+
+            img.hover-shadow {
+                transition: 0.3s;
+            }
+
+            .hover-shadow:hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+        }
+
+        /* Fin fenetre modal et diaporama**************************************/
+
+        >.index {
+
+            @media screen and (max-width: 576px) {
+                .hover-shadow {
+                    width: 100%;
+                }
+            }
+
+            >div:not(#myModal) {
+
+                @media screen and (min-width: 768px) {
+                    display: flex;
+
+                    >div {
+                        width: 60%;
+                        margin-right: 20px;
+                    }
+
+                    >img {
+                        margin-top: 20px;
+                    }
+                }
+            }
+
+            @media screen and (min-width: 768px) {
+                padding-bottom: 20px;
+            }
+
+        }
+
+        >.post {
+
+            >.createdAt {
+                text-align: right;
+                font-style: italic;
+                font-size: 1rem;
+                margin: 15px 0 5px 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            @media screen and (min-width: 768px) {
+                padding-bottom: 20px;
+            }
+        }
+
+        #comments {
+
+            label,
+            input,
+            textarea {
+                display: block;
+                width: 100%;
+            }
+
+            input, textarea{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+        }
+
+        .comments {
+            >#seeComments {
+                &:hover {
+                    font-style: italic;
+                    color: #00f6f6;
+                }
+            }
+
+            >p {
+                text-align: center;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1.2rem;
+            }
+
+            >div {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1.2rem;
+
+                >p {
+                    >span {
+                        font-style: italic;
+                    }
+
+                    &:nth-of-type(1) {
+                        font-weight: bold;
+                    }
+
+                    &:nth-of-type(2) {
+                        background-color: #008a8a;
+                        padding: 30px;
+                    }
+                }
+            }
+        }
+
+        .tracks {
+
+            ul {
+                display: block;
+                list-style: none;
+                padding: 0;
+                >li {
+                    >a {
+                        >img {
+                            position: relative;
+                            top: 5px;
+                            @media screen and (max-width: 576px) {
+                                &.video {
+                                    width: 100%;
+                                }
+                            }
+                        }
+                        text-decoration: none;
+                        color: white;
+                    }
+                    >iframe{
+                        display: block;
+                        margin: auto;
+                        margin-bottom: 20px;
+                        @media screen and (min-width: 768px) {
+                            width: 560px;
+                            height: 315px;                            
+                        }
+                    }
+                    >a.player{
+                        >img{
+                            display: block;
+                            margin:auto;
+                            &:nth-of-type(2){
+                                top: unset;
+                                bottom: 100px;
+                            }
+                        }
+
+                    }
+
+
+                }
+            }
+
+            >div {
+                text-align: center;
+
+                >a {
+                    >img {
+                        width: 30%;
+                    }
+                }
+            }
+
+        }
+
+        .news {
+            h2 {
+                margin-bottom: 20px;
+            }
+
+            >article {
+                border-top: 1px dashed white;
+                padding-bottom: 15px;
+
+                >h3 {
+                    margin: 0;
+                    text-align: unset;
+                    line-height: 1.6rem;
+                }
+
+                >div {
+                    >p {
+                        font-style: italic;
+                        font-size: 1.2rem;
+                        margin: 15px 0 15px 0;
+                        font-family: Arial, Helvetica, sans-serif;
+                    }
+
+                    @media screen and (max-width: 576px) {
+                        img {
+                            width: 100%;
+                        }
+                    }
+
+                    @media screen and (min-width: 768px) {
+                        display: flex;
+
+                        >p {
+                            width: 50%;
+                            margin-right: 20px;
+                        }
+                    }
+                }
+
+                .createdAt {
+                    text-align: right;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 1rem;
+                }
+
+                // >p{
+                //     display: none;
+                // }            
+                >a {
+                    text-align: center;
+                    display: block;
+                    width: 50px;
+                    margin: auto;
+                    margin-top: 10px;
+                    color: white;
+                    text-decoration: none;
+                    background-color: #007f7f;
+                    border-radius: 5px;
+
+                    padding: 0px 10px 15px 10px;
+
+                    &:hover {
+                        font-style: italic;
+                        background-color: #00caca;
+                    }
+                }
+            }
+        }
+
+        >.concerts {
+            h2 {
+                margin-bottom: 20px;
+            }
+
+            >article {
+                border-top: 1px dashed white;
+                padding-bottom: 15px;
+
+                >h3 {
+                    margin: 0;
+                    text-align: unset;
+                    line-height: 1.6rem;
+                }
+
+                >div {
+                    font-style: italic;
+                    font-size: 1.2rem;
+                    margin: 15px 0 15px 0;
+                    font-family: Arial, Helvetica, sans-serif;
+                }
+            }
+        }
+
+
+        @media screen and (min-width: 992px) {
+            width: 992px;
+            margin: auto;
+        }
+    }
+
+    footer {
+        margin-top: 10px;
+        border-top: 1px dashed white;
+
+        p {
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+    }
+}

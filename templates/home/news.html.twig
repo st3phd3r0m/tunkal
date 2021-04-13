@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% set currentUrl = url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+{% block head %}
+{# Instagram #}
+<meta property="og:title" content="{{ post.metaTitle ?? '' }}">
+<meta property="og:description" content="{{ post.metaDescription ?? '' }}">
+<meta property="og:url" content="{{ currentUrl }}">
+<meta property="og:type" content="website">
+{# Fin Instagram #}
+
+<meta name="description" content="{{ post.metaDescription ?? '' }}">
+{% endblock %}
+
+{% block title %}{{ post.metaTitle ?? '' }}{% endblock %}
+
+{% block body %}
+
+<section class="news">
+
+<h2>{{ post.metaTitle }}</h2>
+
+{% for post in posts|sort((a, b) => b.createdAt <=> a.createdAt) %}
+    <article>
+        <h3>{{ post.title }}</h3>
+        <p class="createdAt">Le <time datetime="{{ post.createdAt|date('Y-m-d') }}">{{ post.createdAt|date('d-m-Y') }}</time></p>
+        <div>
+            <p>{{ post.metaDescription }}</p>
+            {# Illustration article #}
+            {% if post.images|length > 0 %}
+                <img src="{{ asset('images/' ~ post.images[0].name )|imagine_filter('min300') }}" alt="{{ post.metaTitle ?? '' }}">
+            {% endif %}
+            {# Fin Illustration article #}
+        </div>
+
+        {# <p class="keywords">
+            {% for keyword in post.keywords %}
+                #<strong>{{ keyword }}</strong>
+            {% endfor %}
+        </p>   #}
+        
+        {% if post.isPastConcert %}
+            <a href="{{ path('pastConcert', {'slug': post.slug}) }}" title="Aller à l'article {{ post.title }}">Lire</a>   
+        {% else %}
+            <a href="{{ path('post', {'slug': post.slug}) }}" title="Aller à l'article {{ post.title }}">Lire</a>
+        {% endif %}
+    </article>
+
+{% endfor %}
+
+</section>
+
+{% endblock %}

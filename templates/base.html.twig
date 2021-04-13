@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Tunkal">
+        <meta name="copyright" content="Copyright © 2019-{{ 'now' | date('Y') }} Tunkal. All rights reserved.">
+
+       	{# Instagram #}
+        <meta property="og:site_name" content="Tunkal">
+        <meta property="og:image" content="{{ asset('images/logo.webp')|imagine_filter('min300') }}">
+	    <meta property="og:image:width" content="300">
+	    {# <meta property="og:image:height" content="300"> #}
+        {# Fin Instagram #}
+
+        {% block head %}{% endblock %}
+
+		<link rel="shortcut icon" href="{{ asset('images/ptiLogo2.webp') }}" type="image/x-icon">
+		<title>
+			{% block title %}Guitariste de Thrash Death Metal Bourgogne Mâcon - Tunkal
+			{% endblock %}
+		</title>
+
+		<!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<header>
+			<a href="{{ path('home') }}" title="Aller à l'accueil">
+				<img class="logoheader" src="{{ asset('images/logo.webp')|imagine_filter('min500') }}" alt="Logo de tunkal" data-desktop-image="{{ asset('images/logo.webp') }}" data-mobile-image="{{ asset('images/logo.webp')|imagine_filter('min500') }}">
+			</a>
+			<h1>Tunkal Music</h1>
+
+			{% if links()|filter( link => link.position == 'header' )|length > 0 %}
+				<div class='socNetWork'>
+					{# Boucle sur liens header #}
+					{% for link in links()|filter( link => link.position == 'header' )|sort((a, b) => a.positionOrder <=> b.positionOrder) %}
+						<a href="{{ link.hyperlink }}" title="{{ link.title }}" 
+						target="{{ (link.type == "external") ? '_blank' : '_self' }}" >{{ link.content|raw }}</a>
+					{% endfor %}
+					{# Fin Boucle sur liens header #}
+				</div>
+			{% endif %}
+			{% if links()|filter( link => link.position == 'nav' )|length > 0 %}
+				<nav>
+
+				    <!-- Hamburger -->
+					<span id="navMenu" title="Menu">
+						<i class="fas fa-bars"></i>
+					</span>
+					<!-- Fin hamburger -->
+
+					<!-- Barre navigation vue ordi -->
+					<div class="menuPrincipal">
+						<a href="{{ path('home') }}" title="Aller à l'accueil" 
+							target="_self" >Home</a>
+						{# Boucle sur liens nav #}
+						{% for link in links()|filter( link => link.position == 'nav' )|sort((a, b) => a.positionOrder <=> b.positionOrder) %}	
+						<a href="{{ link.hyperlink }}" title="{{ link.title }}" 
+							target="{{ (link.type == "external") ? '_blank' : '_self' }}" >{{ link.content }}</a>
+						{% endfor %}
+						{# Fin Boucle sur liens header #}
+					</div>
+				</nav>			
+			{% endif %}
+
+		</header>
+
+        <span id="scroll" title="Back to home">
+	        <i class="fas fa-chevron-circle-up"></i>
+        </span>
+
+		<main>
+			{% block body %}{% endblock %}		
+		</main>
+		<footer>
+			<p>&copy; {{ 'now' | date('Y') }} Tunkal</p>
+		</footer>
+
+		{{ encore_entry_script_tags('app') }}
+		{% block javascripts %}
+		{% endblock %}
+	</body>
+</html>

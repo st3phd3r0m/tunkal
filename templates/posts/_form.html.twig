@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+
+{{ form_row(form.title) }}
+{{ form_row(form.metaTitle) }}
+{{ form_row(form.content) }}
+{{ form_row(form.metaDescription) }}
+{{ form_row(form.keywords) }}
+{{ form_row(form.metaKeywords) }}
+{% if form.slug is defined %}
+	{{ form_row(form.is_past_concert) }}
+	{{ form_row(form.slug) }} 
+{% endif %}
+
+
+<fieldset class="form-group">
+	<legend class="col-form-label">{{ form.images.vars.label }}</legend>
+	<div id="{{ form.images.vars.id }}">
+
+		<ul id="images-fields-list" data-prototype="{{ form_widget(form.images.vars.prototype)|e }}" data-widget-tags="{{ '<li></li>'|e }}" data-widget-counter="{{ form.images|length }}">
+			{% for imagesField in form.images %}
+				<li>
+					<a href="#" class="ml-5">Retirer l'image du produit ?</a>
+					{{ form_errors(imagesField) }}
+					{{ form_widget(imagesField) }}
+
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+	<a href="#" class="add-another-image-collection-widget" data-list-selector="#images-fields-list">
+		<i class="fas fa-plus"></i>
+		Ajouter une image
+	</a>
+</fieldset>
+<button class="btn btn-success my-5">{{ button_label|default('Save') }}</button>
+
+{{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}

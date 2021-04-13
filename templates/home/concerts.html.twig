@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% set currentUrl = url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+{% block head %}
+{# Instagram #}
+<meta property="og:title" content="{{ post.metaTitle ?? '' }}">
+<meta property="og:description" content="{{ post.metaDescription ?? '' }}">
+<meta property="og:url" content="{{ currentUrl }}">
+<meta property="og:type" content="website">
+{# Fin Instagram #}
+
+<meta name="description" content="{{ post.metaDescription ?? '' }}">
+
+
+<script type="application/ld+json">
+[
+    {% for show in shows|sort((a, b) => b.expectedAt <=> a.expectedAt) %}
+        { 
+            "@context": "http://schema.org",
+            "@type": "Event",
+            "name": "{{ show.metaTitle }}",
+            "description": "{{ show.metaDescription }}",
+            "url":"{{ currentUrl }}",
+            "startDate":"{{ show.expectedAt ? show.expectedAt|date('Y-m-d H:i:s') : '' }}",
+            "endDate":"{{ show.expectedAt ? show.expectedAt|date('Y-m-d H:i:s') : '' }}",
+            "image": "{{ asset('images/' ~ show.image )|imagine_filter('min300') }}",
+            "performer": "Tunkal",
+            "organizer": "",
+            "location": {
+                "@type": "Place",
+                "name": "{{ show.location }}",
+                "description": "",
+                "url": false,
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": ""
+                },
+                "telephone": "",
+                "sameAs": ""
+            }
+        }{{ loop.last ? '' : ',' }}
+    {% endfor %}
+]
+</script>
+
+
+
+
+{% endblock %}
+
+{% block title %}{{ post.metaTitle ?? '' }}{% endblock %}
+
+{% block body %}
+
+    <section class="concerts">
+
+        <h2>{{ post.metaTitle ?? '' }}</h2>
+
+    
+        {% for show in shows|sort((a, b) => b.expectedAt <=> a.expectedAt) %}
+            <article>
+                <h3>{{ show.title }}</h3>
+                <div>{{ show.description|raw }}</div>
+
+                <div>
+                    <p>Quand ? {{ show.expectedAt ? show.expectedAt|date('d-m-Y H:i:s') : '' }}</p>
+                    <p>Où ? {{ show.location }}</p>
+                </div>
+
+                {# Illustration article #}
+                {% if show.image is defined %}
+                    <img src="{{ asset('images/' ~ show.image )|imagine_filter('min300') }}" alt="{{ show.metaTitle ?? '' }}">
+                {% endif %}
+                {# Fin Illustration article #}
+
+                {# <p class="keywords">
+                    {% for keyword in show.keywords %}
+                        # <strong>{{ keyword }}</strong>
+                    {% endfor %}
+                </p> #}
+
+                {# <a href="{{ path('show', {'slug': show.slug}) }}" title="Aller à l'article {{ post.title }}">Lire l'article</a> #}
+            </article>
+        {% endfor %}
+    </section>
+
+{% endblock %}

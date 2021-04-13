@@ -1,0 +1,23 @@
+<!-- Button trigger modal -->
+<button id="trash" type="button" class="btn btn-danger d-none" data-toggle="modal" data-target="#deleteCollectionModalCenter">
+   <i class="fas fa-trash"></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteCollectionModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteCollectionModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCollectionModalLongTitle">Suppression de tous ces commentaires ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button id="confirm_delete" class="btn btn-danger" data-dismiss="modal" data-apiurl="delete/api/">Supprimer ces commentaires</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

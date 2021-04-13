@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% set currentUrl = url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
+{% block head %}
+{# Instagram #}
+<meta property="og:title" content="{{ post.metaTitle ?? '' }}">
+<meta property="og:description" content="{{ post.metaDescription ?? '' }}">
+<meta property="og:url" content="{{ currentUrl }}">
+<meta property="og:type" content="website">
+{# Fin Instagram #}
+
+<meta name="description" content="{{ post.metaDescription ?? '' }}">
+{% endblock %}
+
+{% block title %}{{ post.metaTitle ?? '' }}{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="success">{{ message }}</div>
+    {% endfor %}
+
+    <article class="post">
+        <h2>{{ post.title ?? '' }}</h2>
+        <p class="createdAt">Le <time datetime="{{ post.createdAt|date('Y-m-d') }}">{{ post.createdAt|date('d-m-Y') }}</time></p>
+        <div class="postcontent">{{ post.content|raw }}</div>
+
+        {# Illustration article #}
+            {% for image in post.images %}
+                <img class="hover-shadow" data-currentslide="{{ loop.index0 }}"
+                src="{{ asset('images/' ~ image.name )|imagine_filter('min150') }}" alt="{{ post.metaTitle ?? '' }}" data-image-path="{{ asset('images/' ~ image.name ) }}" >
+            {% endfor %}
+        {# Fin Illustration article #}
+
+        <!-- The Modal/Lightbox -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <div class="mySlides">
+                <img src="{{ post.images[0].name ? asset('images/' ~ post.images[0].name )|imagine_filter('min150') : '' }}" alt="{{ post.metaTitle ?? '' }}">
+            </div>
+            <!-- Next/previous controls -->
+            {% if post.images|length > 1 %}
+                <span class="prev" data-plus="-1">&#10094;</span>
+                <span class="next" data-plus="1">&#10095;</span>            
+            {% endif %}
+        </div> 
+
+
+        {# <p class="keywords">
+            {% for keyword in post.keywords %}
+                #<strong>{{ keyword }}</strong>
+            {% endfor %}
+        </p> #}
+    </article>
+
+
+    <section class="comments">
+        <h2>Commentaires</h2>
+
+        {% if post.comments|filter( comment => comment.isModerated == 'true' )|length == 0 %}
+            <p>0 commentaire pour cet article.</p>
+        {% else %}
+            <p id="seeComments">Lire les commentaires <i class="fas fa-caret-down"></i></p>
+        {% endif %}
+        
+        {% for comment in post.comments|filter( comment => comment.isModerated == 'true' ) %}
+            <div>
+                <p><span>{{ comment.pseudo }}</span> le <span>{{ comment.sentAt|date('d-m-Y H:i:s')  }}</span> : </p>
+                <p>"{{ comment.content }}"</p>
+            </div>    
+        {% endfor %}
+    </section>
+
+    {# Formulaire commentaire #}
+    <div>
+        <h2>Écrire un commentaire</h2>
+        {{ include('comments/_form.html.twig', {'button_label': 'Envoyer'}) }}
+    </div>
+    {# Fin Formulaire commentaire #}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('commentform') }}
+{% endblock %}

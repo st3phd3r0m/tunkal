@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Comments;
+use App\Form\CommentsType;
+use App\Repository\CommentsRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/admin/comments")
+ */
+class CommentsController extends AbstractController
+{
+    /**
+     * @Route("/", name="comments_index", methods={"GET"})
+     */
+    public function index(CommentsRepository $commentsRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $comments = $paginator->paginate(
+            $commentsRepository->findAll(),
+            //Le numero de la page, si aucun numero, on force la page 1
+            $request->query->getInt('page', 1),
+            //Nombre d'élément par page
+            10
+        );
+
+        return $this->render('comments/index.html.twig', [
+            'comments' => $comments,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="comments_show", methods={"GET"})
+     */
+    public function show(Comments $comment): Response
+    {
+        return $this->render('comments/show.html.twig', [
+            'comment' => $comment,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="comments_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Comments $comment): Response
+    {
+        $form = $this->createForm(CommentsType::class, $comment);
+        $form->remove('pseudo');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setIsModerated(true);
+            $this->getDoctrine()->getManager()->flush();
+            //Envoi d'un message utilisateur
+            $this->addFlash('success', 'L\'avis client a bien été modifié.');
+
+            return $this->redirectToRoute('comments_index');
+        }
+
+        return $this->render('comments/edit.html.twig', [
+            'comment' => $comment,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="comments_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Comments $comment): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            //Envoi d'un message utilisateur
+            $this->addFlash('success', 'Le commentaire a bien été supprimé');
+        }
+        return $this->redirectToRoute('comments_index');
+    }
+
+    /**
+     * @Route("/delete/api/{id}", name="comment_delete_api", methods={"DELETE"})
+     */
+    public function deleteCommentAPI($id, Request $request, CommentsRepository $commentsRepository): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $token = $request->headers->get('authorization');
+            $comment = $commentsRepository->find($id);
+            if(  $comment == null || !$this->isCsrfTokenValid('delete' . $id, $token)){
+                return new JsonResponse('Not found', 404);
+            }else {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($comment);
+                $entityManager->flush();
+                return new JsonResponse('OK', 200);                
+            }
+        }
+        return new JsonResponse('Method Not Allowed', 405);
+    }
+
+}

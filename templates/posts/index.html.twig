@@ -1,0 +1,88 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Index des articles{% endblock %}
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">Index des articles</h1>
+			</div>
+			<!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item">
+						<a href="{{ path('admin') }}">Dashboard</a>
+					</li>
+					<li class="breadcrumb-item active">Articles</li>
+				</ol>
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<div class="content">
+	<div class="container-fluid">
+
+    	{% for message in app.flashes('success') %}
+			<div class="alert alert-success" role="alert">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in app.flashes('fail') %}
+			<div class="alert alert-warning" role="alert">{{ message }}</div>
+		{% endfor %}
+
+        <a href="{{ path('posts_new') }}" class="btn btn-success my-5">Create new</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+					<th>
+						{{ knp_pagination_sortable(posts, 'Titre', 'title') }}
+					</th>
+                    <th>
+                        {{ knp_pagination_sortable(posts, 'Créé le', 'created_at') }}
+                    </th>
+                    <th>
+                        {{ knp_pagination_sortable(posts, 'Is_past_concert', 'Is_past_concert') }}
+                    </th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ post.isPastConcert ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a href="{{ path('posts_show', {'id': post.id}) }}">show</a>
+                        <a href="{{ path('posts_edit', {'id': post.id}) }}">edit</a>
+                        {{ include('posts/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+			<div>
+				{{ knp_pagination_render(posts) }}
+			</div>
+		</table>
+		<div>
+			{{ knp_pagination_render(posts) }}
+		</div>
+
+        <a href="{{ path('posts_new') }}" class="btn btn-success my-5">Create new</a>
+	</div>
+</div>
+{% endblock %}
