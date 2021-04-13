@@ -20,10 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     private $postsRepository;
+    private $showsRepository;
 
-    public function __construct(PostsRepository $postsRepository)
+    public function __construct(PostsRepository $postsRepository, ShowsRepository $showsRepository)
     {
         $this->postsRepository = $postsRepository;
+        $this->showsRepository = $showsRepository;
     }
 
     /**
@@ -46,12 +48,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/news/", name="news", methods={"GET"})
      */
-    public function indexPosts(PostsRepository $postsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function indexPosts(PaginatorInterface $paginator, Request $request): Response
     {
         $post = $this->newFirmPage('news');
         $posts = $paginator->paginate(
             // $postsRepository->findBy(['is_past_concert'=>0], ['created_at'=>'DESC']),
-            $postsRepository->findPosts(),
+            $this->postsRepository->findPosts(),
             //Le numero de la page, si aucun numero, on force la page 1
             $request->query->getInt('page', 1),
             //Nombre d'élément par page
@@ -67,11 +69,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/previous/concerts/", name="pastConcerts", methods={"GET"})
      */
-    public function indexPastConcerts(PostsRepository $postsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function indexPastConcerts(PaginatorInterface $paginator, Request $request): Response
     {
         $post = $this->newFirmPage('previous-concerts');
         $posts = $paginator->paginate(
-            $postsRepository->findBy(['is_past_concert' => 1], ['created_at' => 'DESC']),
+            $this->postsRepository->findBy(['is_past_concert' => 1], ['created_at' => 'DESC']),
             //Le numero de la page, si aucun numero, on force la page 1
             $request->query->getInt('page', 1),
             //Nombre d'élément par page
@@ -87,11 +89,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/upcoming/concerts/", name="upcomingShows", methods={"GET"})
      */
-    public function indexUpcomingShows(ShowsRepository $showsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function indexUpcomingShows(PaginatorInterface $paginator, Request $request): Response
     {
         $post = $this->newFirmPage('upcoming-concerts');
         $shows = $paginator->paginate(
-            $showsRepository->findExpectedConcerts(),
+            $this->showsRepository->findExpectedConcerts(),
             //Le numero de la page, si aucun numero, on force la page 1
             $request->query->getInt('page', 1),
             //Nombre d'élément par page
@@ -104,58 +106,58 @@ class HomeController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/news/{slug}", name="post", methods={"GET", "POST"})
-    //  * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET", "POST"})
-    //  */
-    // public function showPost(Posts $post, Request $request): Response
-    // {
-    //     //Instanciation de Comments, création formulaire commentaire
-    //     $comment = new Comments();
-    //     $formComment = $this->createForm(CommentsType::class, $comment);
-    //     $formComment->handleRequest($request);
-
-    //     //Soumission formulaire commentaire
-    //     if ($formComment->isSubmitted() && $formComment->isValid()) {
-    //         $comment->setPost($post);
-    //         $comment->setSentAt(new \DateTime('now'));
-    //         $comment->setIsModerated(0);
-
-    //         $entityManager = $this->getDoctrine()->getManager();
-    //         $entityManager->persist($comment);
-    //         $entityManager->flush();
-
-    //         //Envoi d'un message utilisateur
-    //         $this->addFlash('success', 'Commentaire enregistré');
-
-    //         $_route = $request->get('_route');
-    //         return $this->redirectToRoute($_route, [
-    //             'slug' => $post->getSlug(),
-    //         ]);
-    //     }
-
-    //     return $this->render('home/post.html.twig', [
-    //         'post' => $post,
-    //         'form' => $formComment->createView(),
-    //     ]);
-    // }
-
-
     /**
-     * @Route("/news/{slug}", name="post", methods={"GET"})
-     * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET"})
+     * @Route("/news/{slug}", name="post", methods={"GET", "POST"})
+     * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET", "POST"})
      */
-    public function showPost(Posts $post): Response
+    public function showPost(Posts $post, Request $request): Response
     {
         //Instanciation de Comments, création formulaire commentaire
         $comment = new Comments();
         $formComment = $this->createForm(CommentsType::class, $comment);
+        $formComment->handleRequest($request);
+
+        //Soumission formulaire commentaire
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setPost($post);
+            $comment->setSentAt(new \DateTime('now'));
+            $comment->setIsModerated(0);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            //Envoi d'un message utilisateur
+            $this->addFlash('success', 'Commentaire enregistré');
+
+            $_route = $request->get('_route');
+            return $this->redirectToRoute($_route, [
+                'slug' => $post->getSlug(),
+            ]);
+        }
 
         return $this->render('home/post.html.twig', [
             'post' => $post,
             'form' => $formComment->createView(),
         ]);
     }
+
+
+    // /**
+    //  * @Route("/news/{slug}", name="post", methods={"GET"})
+    //  * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET"})
+    //  */
+    // public function showPost(Posts $post): Response
+    // {
+    //     //Instanciation de Comments, création formulaire commentaire
+    //     $comment = new Comments();
+    //     $formComment = $this->createForm(CommentsType::class, $comment);
+
+    //     return $this->render('home/post.html.twig', [
+    //         'post' => $post,
+    //         'form' => $formComment->createView(),
+    //     ]);
+    // }
 
 
 
