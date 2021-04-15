@@ -59,7 +59,7 @@ class ShowsController extends AbstractController
             $keywords = array_filter($keywords);
             $show->setMetaKeywords($keywords);
 
-            $show->setUpdatedAt(new \DateTime('now'));
+            $show->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($show);
@@ -98,7 +98,7 @@ class ShowsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $show->setUpdatedAt(new \DateTime('now'));
+            $show->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
             //Stockage de l'ancien nom de fichier image
             $oldImage = $show->getImage();
 

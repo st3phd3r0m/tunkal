@@ -57,7 +57,7 @@ class LinksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $link->setUpdatedAt(new \DateTime('now'));
+            $link->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
             if (
                 '/show/' == $form->get('type')->getData() &&
@@ -112,7 +112,7 @@ class LinksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $link->setUpdatedAt(new \DateTime('now'));
+            $link->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
             if (
                 '/show/' == $form->get('type')->getData() &&

@@ -7,7 +7,6 @@ use App\Form\CommentsType;
 use App\Repository\CommentsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommentsController extends AbstractController
 {
+
     /**
      * @Route("/", name="comments_index", methods={"GET"})
      */
@@ -34,6 +34,7 @@ class CommentsController extends AbstractController
             'comments' => $comments,
         ]);
     }
+
 
     /**
      * @Route("/{id}", name="comments_show", methods={"GET"})
@@ -83,25 +84,4 @@ class CommentsController extends AbstractController
         }
         return $this->redirectToRoute('comments_index');
     }
-
-    /**
-     * @Route("/delete/api/{id}", name="comment_delete_api", methods={"DELETE"})
-     */
-    public function deleteCommentAPI($id, Request $request, CommentsRepository $commentsRepository): JsonResponse
-    {
-        if ($request->isXmlHttpRequest()) {
-            $token = $request->headers->get('authorization');
-            $comment = $commentsRepository->find($id);
-            if(  $comment == null || !$this->isCsrfTokenValid('delete' . $id, $token)){
-                return new JsonResponse('Not found', 404);
-            }else {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($comment);
-                $entityManager->flush();
-                return new JsonResponse('OK', 200);                
-            }
-        }
-        return new JsonResponse('Method Not Allowed', 405);
-    }
-
 }

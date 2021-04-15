@@ -65,7 +65,7 @@ class PostsController extends AbstractController
             $keywords = array_filter($keywords);
             $post->setMetaKeywords($keywords);
 
-            $post->setCreatedAt(new \DateTime('now'));
+            $post->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
@@ -149,7 +149,7 @@ class PostsController extends AbstractController
             $keywords = array_filter($keywords);
             $post->setMetaKeywords($keywords);
 
-            $post->setCreatedAt(new \DateTime('now'));
+            $post->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
 
             $entityManager->flush();
 

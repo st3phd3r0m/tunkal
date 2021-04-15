@@ -120,7 +120,7 @@ class HomeController extends AbstractController
         //Soumission formulaire commentaire
         if ($formComment->isSubmitted() && $formComment->isValid()) {
             $comment->setPost($post);
-            $comment->setSentAt(new \DateTime('now'));
+            $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
             $comment->setIsModerated(0);
 
             $entityManager = $this->getDoctrine()->getManager();

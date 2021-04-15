@@ -34,14 +34,32 @@ function toogleTrash() {
 
 function deleteComments() {
     for (let comment of commentsToDelete) {
-        $.ajax({
-            url: window.location.pathname+this.dataset.apiurl+comment.id,
-            method: 'DELETE',
-            type: 'DELETE',
-            headers: {"Authorization": comment.token},
-        }).done(function () {
-            $("#comment_" + comment.id).parents("tr").remove();
+        fetch(
+            '/admin/api/comments/' + comment.id,
+            {
+                method: 'DELETE',
+                mode: 'same-origin',
+                headers: {
+                    "Authorization": comment.token,
+                    "X-Requested-With": 'XMLHttpRequest'
+                }
+            }
+        ).then((response) => {
+            if (response.status == 200) {
+                $("#comment_" + comment.id).parents("tr").remove();
+                $("#message-api").html("Elément(s) supprimés");
+                $("#message-api").removeClass("d-none").addClass('alert-success');
+            } else {
+                $("#message-api").html("Une erreur est survenue: " + response.status + " " + response.statusText);
+                $("#message-api").removeClass("d-none").addClass('alert-warning');
+            }
+        }).catch((error) => {
+            $("#message-api").html("Une erreur est survenue: " + error.message);
+            $("#message-api").removeClass("d-none").addClass('alert-danger');
         });
     }
-    commentsToDelete=[];
+    commentsToDelete = [];
+    setTimeout(function () {
+        $("#message-api").addClass("d-none");
+    }, 2000);
 }
