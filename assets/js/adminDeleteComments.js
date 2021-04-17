@@ -57,19 +57,23 @@ function deleteComments() {
             }
             doneCount++;
             if (doneCount == commentsToDelete.length) {
-                commentsToDelete = [];
-                try {
-                    window.location.reload();
-                } catch (error) {
-                    console.log(error);
-                }
-                setTimeout(function () {
-                    $("#message-api").addClass("d-none");
-                }, 2000);
+                tryToRefresh();
             }
         }).catch((error) => {
             $("#message-api").html("Une erreur est survenue: " + error.message);
             $("#message-api").removeClass("d-none").addClass('alert-danger');
         });
     }
+}
+
+function tryToRefresh(){
+    commentsToDelete = [];
+    try {
+        window.location.reload();
+    } catch (error) {
+        console.log(error);
+    }
+    setTimeout(function () {
+        $("#message-api").addClass("d-none");
+    }, 2000);
 }

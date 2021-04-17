@@ -20,6 +20,7 @@
     {% for message in app.flashes('success') %}
         <div class="success">{{ message }}</div>
     {% endfor %}
+    <div id="comment_sent"></div>
 
     <article class="post">
         <h2>{{ post.title ?? '' }}</h2>
@@ -54,7 +55,7 @@
         </p> #}
     </article>
 
-    <section class="comments">
+    <section class="comments" data-slug="{{ post.slug }}">
         <h2>Commentaires</h2>
         {% if numbOfCommentsPages == 0 %}
             <p>0 commentaire pour cet article.</p>
@@ -63,26 +64,9 @@
                 <p><span class="pseudo"></span>, le <span class="sent_at"></span> : </p>
                 <p class="comment_content"></p>
             </div>
-            <p id="seeComments" data-slug="{{ post.slug }}" data-numberofpages="{{ numbOfCommentsPages }}">Voir les commentaires <i class="fas fa-caret-down"></i></p>
+            <p id="seeComments" data-numberofpages="{{ numbOfCommentsPages }}">Voir les commentaires <i class="fas fa-caret-down"></i></p>
         {% endif %}
     </section>
-
-    {# <section class="comments">
-        <h2>Commentaires</h2>
-
-        {% if post.comments|filter( comment => comment.isModerated == 'true' )|length == 0 %}
-            <p>0 commentaire pour cet article.</p>
-        {% else %}
-            <p id="seeComments">Lire les commentaires <i class="fas fa-caret-down"></i></p>
-        {% endif %}
-        
-        {% for comment in post.comments|filter( comment => comment.isModerated == 'true' ) %}
-            <div>
-                <p><span>{{ comment.pseudo }}</span> le <span>{{ comment.sentAt|date('d-m-Y H:i:s')  }}</span> : </p>
-                <p>"{{ comment.content }}"</p>
-            </div>    
-        {% endfor %}
-    </section> #}
 
     {# Formulaire commentaire #}
     <div>

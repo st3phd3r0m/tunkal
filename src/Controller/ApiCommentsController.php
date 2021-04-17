@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
+use App\Entity\Posts;
 use App\Form\CommentsType;
 use App\Repository\CommentsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,13 +30,38 @@ class ApiCommentsController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $page = $request->query->get("page");
             if (!is_numeric($page)) {
-                return new JsonResponse('Bad request : no page number specified', Response::HTTP_BAD_REQUEST);
+                return new JsonResponse('Bad request : no page number specified', 400);
             }
             if ($page > $this->commentsRepository->getNumberOfPages($slug)) {
-                return new JsonResponse('', Response::HTTP_NO_CONTENT);
+                return new JsonResponse('', 204);
             }
             $comments = $this->commentsRepository->getPage($page, $slug);
             return new JsonResponse($comments);
+        }
+        return new JsonResponse('Method Not Allowed', 405);
+    }
+
+    /**
+     * @Route("/api/comments/post/{slug}", name="comments_create_onpost_api", methods={"POST"} )
+     */
+    public function createAction(Posts $post, Request $request): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $token = $request->headers->get('authorization');
+            if (!$this->isCsrfTokenValid('comments', $token)) {
+                return new JsonResponse('Unauthorized', 401);
+            }
+            $data = json_decode($request->getContent());
+            $comment = new Comments();
+            $comment->setPseudo(htmlspecialchars($data->pseudo));
+            $comment->setContent(htmlspecialchars($data->content));
+            $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $comment->setIsModerated(0);
+            $comment->setPost($post);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return new JsonResponse('Created', 201);
         }
         return new JsonResponse('Method Not Allowed', 405);
     }
@@ -49,7 +75,7 @@ class ApiCommentsController extends AbstractController
             $token = $request->headers->get('authorization');
             $comment = $this->commentsRepository->find($id);
             if (!$this->isCsrfTokenValid('delete' . $id, $token)) {
-                return new JsonResponse('Needs authentication', Response::HTTP_UNAUTHORIZED);
+                return new JsonResponse('Unauthorized', 401);
             } elseif ($comment == null) {
                 return new JsonResponse('Not found', 404);
             } else {

@@ -8,8 +8,9 @@ $(function () {
     fields = $("#comments .form-control");
     onCheckFields();
     fields.on('keyup', onCheckFields);
-
     observerConnect();
+
+    document.querySelector("form>button").addEventListener("click", extractFormData);
 });
 
 function checkField(elementObject) {
@@ -32,7 +33,7 @@ function onCheckFields() {
             observer.disconnect();
             document.querySelector("form>button").disabled = true;
             observerConnect();
-            break;
+            return false;
         }
         if (index == fields.length - 1) {
             observer.disconnect();
@@ -40,13 +41,61 @@ function onCheckFields() {
             observerConnect();
         }
     }
+    return true;
 }
 
-function refresh(){
+function refresh() {
     window.location.reload();
 }
 
-function observerConnect(){
+function observerConnect() {
     let form = document.querySelector("form");
-    observer.observe(form, { attributes: true, childList: true , characterData: true, subtree: true});
+    observer.observe(form, { attributes: true, childList: true, characterData: true, subtree: true });
+}
+
+function extractFormData(e) {
+    e.preventDefault();
+    if (this.disabled == false && onCheckFields) {
+        let formData = {};
+        for (let field of fields) {
+            formData[field.id.replace('comments_', '')] = $(field).val();
+        }
+        let slug = document.querySelector("section.comments").dataset.slug;
+        _token = $("#comments__token").val();
+        ajaxCall(formData, slug, _token);
+    }
+}
+
+function ajaxCall(formData, slug, _token) {    
+    fetch(
+        '/api/comments/post/'+slug,
+        {
+            method: 'POST',
+            mode: 'same-origin',
+            headers: {
+                "Authorization": _token,
+                "Content-type": 'application/json',
+                "X-Requested-With": 'XMLHttpRequest'
+            },
+            body: JSON.stringify(formData)
+        }
+    ).then(
+        response => {
+            if (response.status == 201) {
+                $("#comments_pseudo").val('');
+                $("#comments_content").val('');
+                $("#comment_sent").text('Commentaire enregistré').addClass("success").show();
+                setTimeout(function () {
+                    $("#comment_sent").hide();
+                }, 2000);
+            } else {
+                $("#comment_sent").text('Un problème est surnenu').addClass("form-error-message").show();
+                setTimeout(function () {
+                    $("#comment_sent").hide();
+                }, 2000);
+            }
+        
+        
+        },
+    );
 }

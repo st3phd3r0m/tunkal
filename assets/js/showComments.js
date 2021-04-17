@@ -12,7 +12,7 @@ $(function () {
 function showComments() {
     if(maxNumberOfPages>page){
         page++;
-        getComments(this.dataset.slug);
+        getComments(document.querySelector("section.comments").dataset.slug);
     }else{
         $(".comment").show();
         $(this).html('Fermer les commentaires <i class="fas fa-caret-up"></i>').on("click", hideComments);
@@ -29,20 +29,18 @@ function getComments(slug) {
         '/api/comments/post/' + slug + '?page=' + page,
         {
             method: 'GET',
-            // mode: 'same-origin',
+            mode: 'same-origin',
             headers: {
                 "X-Requested-With": 'XMLHttpRequest'
             }
         }
     ).then(
-        response => (response.text()),
-        reason1 => console.log(reason1)
+        response => response.text()
     ).then(
         value => {
             let object = JSON.parse(value);
             fillComments(object.data);
-        },
-        reason2 => console.log(reason2)
+        }
     );
 }
 
