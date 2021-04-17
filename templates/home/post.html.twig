@@ -54,8 +54,20 @@
         </p> #}
     </article>
 
-
     <section class="comments">
+        <h2>Commentaires</h2>
+        {% if numbOfCommentsPages == 0 %}
+            <p>0 commentaire pour cet article.</p>
+        {% else %}
+            <div class="comment">
+                <p><span class="pseudo"></span>, le <span class="sent_at"></span> : </p>
+                <p class="comment_content"></p>
+            </div>
+            <p id="seeComments" data-slug="{{ post.slug }}" data-numberofpages="{{ numbOfCommentsPages }}">Voir les commentaires <i class="fas fa-caret-down"></i></p>
+        {% endif %}
+    </section>
+
+    {# <section class="comments">
         <h2>Commentaires</h2>
 
         {% if post.comments|filter( comment => comment.isModerated == 'true' )|length == 0 %}
@@ -70,7 +82,7 @@
                 <p>"{{ comment.content }}"</p>
             </div>    
         {% endfor %}
-    </section>
+    </section> #}
 
     {# Formulaire commentaire #}
     <div>
@@ -80,5 +92,5 @@
     {# Fin Formulaire commentaire #}
 {% endblock %}
 {% block javascripts %}
-    {{ encore_entry_script_tags('commentform') }}
+    {{ encore_entry_script_tags('appComments') }}
 {% endblock %}

@@ -34,8 +34,8 @@ class CommentsRepository extends ServiceEntityRepository
 
     public function getPage(int $page, string $post_slug, int $limit = 5)
     {
-        $offset = $limit * $page;
-        $dql = 'SELECT c.pseudo, c.content, c.sent_at FROM comments as c'
+        $offset = $limit * ($page-1);
+        $dql = 'SELECT c.id, c.pseudo, c.content, c.sent_at FROM comments as c'
             .' INNER JOIN posts ON c.post_id = posts.id'
             .' WHERE posts.slug = ? AND c.is_moderated = ?'
             .' ORDER BY sent_at DESC'

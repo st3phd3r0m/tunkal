@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Comments;
 use App\Form\CommentsType;
 use App\Repository\CommentsRepository;
-use App\Repository\PostsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +31,7 @@ class ApiCommentsController extends AbstractController
             if (!is_numeric($page)) {
                 return new JsonResponse('Bad request : no page number specified', Response::HTTP_BAD_REQUEST);
             }
-            if ($page + 1 > $this->commentsRepository->getNumberOfPages($slug)) {
+            if ($page > $this->commentsRepository->getNumberOfPages($slug)) {
                 return new JsonResponse('', Response::HTTP_NO_CONTENT);
             }
             $comments = $this->commentsRepository->getPage($page, $slug);

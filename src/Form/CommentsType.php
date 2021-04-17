@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class CommentsType extends AbstractType
 {
@@ -18,16 +19,42 @@ class CommentsType extends AbstractType
         $builder
         ->add('pseudo', TextType::class, [
             'required' => true,
-            'label' => 'Pseudo',
+            'label' => 'Votre pseudo',
+            'attr'=>[
+                'minlength'=>4,
+                'maxlength'=>20,
+                'pattern'=> "[A-Za-z]{4,20}.{0,}",
+                'title'=>"Votre pseudo doit comporter entre 4 et 20 carctères et commencer par 4 lettres minimum"
+            ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'Nom/pseudo requis',
                 ]),
+                new Length([
+                    'min' => 4,
+                    'max' => 20,
+                    'minMessage' => 'Votre pseudo doit comporter au moins {{ limit }}
+                    caractères.',
+                    'maxMessage' => 'Votre pseudo doit comporter moins de {{ limit }}
+                    caractères.',
+                ]),
+                new Regex([
+                    'pattern'=> "/^[a-zA-Z]{4,20}/",
+                    'match'=>true,
+                    'message'=>"Votre pseudo doit commencer par 4 lettres au moins"
+                ])
+                
             ],
         ])
         ->add('content', TextareaType::class, [
             'required' => true,
             'label' => 'Votre commentaire',
+            'attr'=>[
+                'minlength'=>10,
+                'maxlength'=>240,
+                'pattern'=> "[A-Za-z]{2,240}.{0,}",
+                'title'=>"Votre commentaire doit comporter entre 2 et 240 carctères et commencer par 2 lettres minimum"
+            ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'Commentaire requis',
@@ -40,6 +67,11 @@ class CommentsType extends AbstractType
                     'maxMessage' => 'Votre commentaire doit comporter moins de {{ limit }}
                     caractères.',
                 ]),
+                new Regex([
+                    'pattern'=> "/^[a-zA-Z]{2,240}/",
+                    'match'=>true,
+                    'message'=>"Votre commentaire doit commencer par 2 lettres au moins"
+                ])
             ],
         ])
         ;

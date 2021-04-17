@@ -25,7 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('loadvideo', './assets/js/loadvideo.js')
-    .addEntry('commentform', './assets/js/commentForm.js')
+    .addEntry('appComments', './assets/appComments.js')
     .addEntry('adminLink', './assets/js/whichLink.js')
     .addEntry('adminShows', './assets/adminShows.js')
     .addEntry('adminPosts', './assets/adminPosts.js')

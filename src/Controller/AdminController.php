@@ -30,13 +30,13 @@ class AdminController extends AbstractController
     {
         $nbrShows = count($this->showsRepository->findAll());
         $nbrPosts = count($this->postsRepository->findAll());
-        // $nbrComments = count($this->commentsRepository->findAll());
+        $nbrComments = count($this->commentsRepository->findAll());
         $nbrUsers = count($this->usersRepository->findAll());
         $nbrLinks = count($this->linksRepository->findAll());
 
         return $this->render('admin/index.html.twig', [
             'nbrUsers' => $nbrUsers,
-            // 'nbrComments' => $nbrComments,
+            'nbrComments' => $nbrComments,
             'nbrPosts' => $nbrPosts,
             'nbrShows' => $nbrShows,
             'nbrLinks' => $nbrLinks,

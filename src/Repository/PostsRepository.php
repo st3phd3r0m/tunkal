@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Posts;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,19 @@ class PostsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Posts::class);
+    }
+
+    /**
+     * Gets a post
+     *
+     * @param string $slug
+     * @return Post
+     */
+    public function getPostOnly(string $slug){
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :val1')
+            ->setParameter('val1', $slug)
+            ->getQuery()->getOneOrNullResult();
     }
 
     /**

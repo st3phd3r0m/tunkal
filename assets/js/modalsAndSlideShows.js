@@ -4,28 +4,11 @@ let src = [];
 //Attente chargement page web
 $(function () {
     let miniatures = $(".hover-shadow");
-
     for (let miniature of miniatures) {
         src.push( $(miniature).data('image-path') );
         $(miniature).on("click", openModal);
     }
-
-    $(".comments>div").hide();
-    $("#seeComments").on("click", showComments);
-
-
-
 }); // Fin chargement page web
-
-function showComments(){
-    $(".comments>div").show();
-    $(this).html('Fermer commentaires <i class="fas fa-caret-up"></i>').on("click", hideComments);
-}
-
-function hideComments(){
-    $(".comments>div").hide();
-    $(this).html('Lire commentaires <i class="fas fa-caret-down"></i>').on("click", showComments);
-}
 
 // Open the Modal
 function openModal() {

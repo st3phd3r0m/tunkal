@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comments;
 use App\Entity\Posts;
 use App\Form\CommentsType;
+use App\Repository\CommentsRepository;
 use App\Repository\LinksRepository;
 use App\Repository\PostsRepository;
 use App\Repository\ShowsRepository;
@@ -19,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController extends AbstractController
 {
-    private $postsRepository;
-    private $showsRepository;
+    private $postsRepository, $showsRepository, $commentsRepository;
 
-    public function __construct(PostsRepository $postsRepository, ShowsRepository $showsRepository)
+    public function __construct(PostsRepository $postsRepository, ShowsRepository $showsRepository, CommentsRepository $commentsRepository)
     {
         $this->postsRepository = $postsRepository;
         $this->showsRepository = $showsRepository;
+        $this->commentsRepository = $commentsRepository;
     }
 
     /**
@@ -106,6 +107,22 @@ class HomeController extends AbstractController
         ]);
     }
 
+    // /**
+    //  * @Route("/news/{slug}", name="post", methods={"GET"})
+    //  * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET"})
+    //  */
+    // public function showPost(Posts $post): Response
+    // {
+    //     //Création formulaire commentaire
+    //     $formComment = $this->createForm(CommentsType::class);
+
+    //     return $this->render('home/post.html.twig', [
+    //         'post' => $post,
+    //         'numbOfCommentsPages'=> $this->commentsRepository->getNumberOfPages($post->getSlug()),
+    //         'form' => $formComment->createView(),
+    //     ]);
+    // }
+
     /**
      * @Route("/news/{slug}", name="post", methods={"GET", "POST"})
      * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET", "POST"})
@@ -138,6 +155,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/post.html.twig', [
             'post' => $post,
+            'numbOfCommentsPages'=> $this->commentsRepository->getNumberOfPages($post->getSlug()),
             'form' => $formComment->createView(),
         ]);
     }
