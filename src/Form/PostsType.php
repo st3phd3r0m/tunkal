@@ -16,7 +16,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PostsType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * Undocumented function
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $firmSlugs = [
             'accueil',
@@ -117,7 +124,7 @@ class PostsType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Posts::class,

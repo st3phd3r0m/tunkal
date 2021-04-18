@@ -14,31 +14,37 @@ class Comments
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $pseudo;
 
     /**
      * @ORM\Column(type="text")
+     * @var string
      */
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $is_moderated;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
     private $sent_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="comments")
+     * @var Posts
      */
     private $post;
 

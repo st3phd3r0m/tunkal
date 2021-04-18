@@ -17,51 +17,61 @@ class Links
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $hyperlink;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $position;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @var int
      */
     private $position_order;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $alt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $image;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
     private $updated_at;
 
@@ -73,16 +83,19 @@ class Links
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
      */
     private $is_active;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
      */
     private $is_video;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTimeInterface
      */
     private $uploaded_at;
 

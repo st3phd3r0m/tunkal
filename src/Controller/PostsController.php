@@ -227,7 +227,7 @@ class PostsController extends AbstractController
     /**
      * @Route("/give/posts", name="give_posts", methods={"GET"})
      */
-    public function givePosts(Request $request, PostsRepository $postsRepository)
+    public function givePosts(Request $request, PostsRepository $postsRepository): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
             $postsCollection = $postsRepository->findAll();

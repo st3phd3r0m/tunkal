@@ -8,15 +8,16 @@ use App\Repository\PostsRepository;
 use App\Repository\ShowsRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    private $showsRepository;
-    private $commentsRepository;
-    private $postsRepository;
-    private $usersRepository;
-    private $linksRepository;
+    private ShowsRepository $showsRepository;
+    private CommentsRepository $commentsRepository;
+    private PostsRepository $postsRepository;
+    private UsersRepository $usersRepository;
+    private LinksRepository $linksRepository;
 
     public function __construct(ShowsRepository $showsRepository, CommentsRepository $commentsRepository, PostsRepository $postsRepository, UsersRepository $usersRepository, LinksRepository $linksRepository)
     {
@@ -28,9 +29,10 @@ class AdminController extends AbstractController
     }
 
     /**
+     *
      * @Route("/admin", name="admin")
      */
-    public function index()
+    public function index(): Response
     {
         $nbrShows = count($this->showsRepository->findAll());
         $nbrPosts = count($this->postsRepository->findAll());

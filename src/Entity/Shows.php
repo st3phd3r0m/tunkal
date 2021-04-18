@@ -18,62 +18,74 @@ class Shows
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $location;
 
     /**
      * @ORM\Column(type="text")
+     * @var string
      */
     private $metaDescription;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $metaTitle;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
     private $expected_at;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $image;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="text")
+     * @var string
      */
     private $description;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @var array<int, string>
      */
     private $metaKeywords = [];
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @var array<int, string>
      */
     private $keywords = [];
 
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true)
+     * @var string
      */
     private $slug;
 
@@ -184,11 +196,22 @@ class Shows
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array<int, string>|null
+     */
     public function getMetaKeywords(): ?array
     {
         return $this->metaKeywords;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array<int, string>|null $metaKeywords
+     * @return self
+     */
     public function setMetaKeywords(?array $metaKeywords): self
     {
         $this->metaKeywords = $metaKeywords;
@@ -196,11 +219,22 @@ class Shows
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array<int, string>|null
+     */
     public function getKeywords(): ?array
     {
         return $this->keywords;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array<int, string>|null $keywords
+     * @return self
+     */
     public function setKeywords(?array $keywords): self
     {
         $this->keywords = $keywords;

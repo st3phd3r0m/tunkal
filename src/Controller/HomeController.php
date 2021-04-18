@@ -20,9 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController extends AbstractController
 {
-    private $postsRepository;
-    private $showsRepository;
-    private $commentsRepository;
+    private PostsRepository $postsRepository;
+    private ShowsRepository $showsRepository;
+    private CommentsRepository $commentsRepository;
 
     public function __construct(PostsRepository $postsRepository, ShowsRepository $showsRepository, CommentsRepository $commentsRepository)
     {
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(LinksRepository $linksRepository)
+    public function index(LinksRepository $linksRepository): Response
     {
         $post = $this->newFirmPage('accueil');
 
@@ -140,7 +140,7 @@ class HomeController extends AbstractController
         if ($formComment->isSubmitted() && $formComment->isValid()) {
             $comment->setPost($post);
             $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-            $comment->setIsModerated(0);
+            $comment->setIsModerated(false);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
@@ -184,7 +184,7 @@ class HomeController extends AbstractController
      *
      * @param string $slug
      *
-     * @return Post $post
+     * @return Posts $post
      */
     public function newFirmPage(string $slug = null)
     {
@@ -202,7 +202,7 @@ class HomeController extends AbstractController
             $post->setKeyWords($keywords);
             $post->setMetaKeywords($keywords);
             $post->setCreatedAt(new \DateTime('now'));
-            $post->setIsPastConcert(0);
+            $post->setIsPastConcert(false);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();

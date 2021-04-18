@@ -157,7 +157,7 @@ class ShowsController extends AbstractController
     /**
      * @Route("/give/shows", name="give_shows", methods={"GET"})
      */
-    public function giveShows(Request $request, ShowsRepository $showsRepository)
+    public function giveShows(Request $request, ShowsRepository $showsRepository): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
             $showsCollection = $showsRepository->findAll();

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiCommentsController extends AbstractController
 {
-    private $commentsRepository;
+    private CommentsRepository $commentsRepository;
 
     public function __construct(CommentsRepository $commentsRepository)
     {
@@ -58,7 +58,7 @@ class ApiCommentsController extends AbstractController
             $form->submit($data);
             if ($form->isSubmitted() && $form->isValid()) {
                 $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-                $comment->setIsModerated(0);
+                $comment->setIsModerated(false);
                 $comment->setPost($post);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($comment);
@@ -76,7 +76,7 @@ class ApiCommentsController extends AbstractController
     /**
      * @Route("/admin/api/comments/{id}", name="comments_delete_api", methods={"DELETE"})
      */
-    public function deleteAction($id, Request $request): JsonResponse
+    public function deleteAction(int $id, Request $request): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
             $token = $request->headers->get('authorization');

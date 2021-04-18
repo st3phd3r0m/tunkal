@@ -20,7 +20,14 @@ class CommentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Comments::class);
     }
 
-    public function getNumberOfPages(string $post_slug, int $limit = 5)
+    /**
+     * Undocumented function
+     *
+     * @param string $post_slug
+     * @param integer $limit
+     * @return integer
+     */
+    public function getNumberOfPages(string $post_slug, int $limit = 5): int
     {
         $dql = 'SELECT COUNT(*) FROM comments as c'
                 .' INNER JOIN posts ON c.post_id = posts.id'
@@ -33,7 +40,15 @@ class CommentsRepository extends ServiceEntityRepository
         return (int) ceil($result / $limit);
     }
 
-    public function getPage(int $page, string $post_slug, int $limit = 5)
+    /**
+     * Undocumented function
+     *
+     * @param integer $page
+     * @param string $post_slug
+     * @param integer $limit
+     * @return object
+     */
+    public function getPage(int $page, string $post_slug, int $limit = 5): object
     {
         $offset = $limit * ($page - 1);
         $dql = 'SELECT c.id, c.pseudo, c.content, c.sent_at FROM comments as c'

@@ -17,11 +17,13 @@ class Images
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $name;
 
@@ -36,11 +38,13 @@ class Images
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
     private $updated_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="images", cascade={"persist"})
+     * @var Posts
      */
     private $posts;
 
