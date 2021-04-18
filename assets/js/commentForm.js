@@ -74,9 +74,7 @@ function extractFormData(e) {
     }
 }
 
-function ajaxCall(formData, slug) { 
-    formData.nosiar= "Dans le fion !"; 
-    console.log(formData)
+function ajaxCall(formData, slug) {
     fetch(
         '/api/comments/post/'+slug,
         {
