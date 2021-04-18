@@ -1,3 +1,0 @@
-GET  http://tunkal.test/admin/comments HTTP/1.1
-Authorization: 
-Cookie: PHPSESSID=de5qa3s1sdoei4tluee3f7i86b

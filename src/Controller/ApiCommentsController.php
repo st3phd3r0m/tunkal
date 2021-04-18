@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiCommentsController extends AbstractController
 {
@@ -51,17 +51,20 @@ class ApiCommentsController extends AbstractController
             if (!$this->isCsrfTokenValid('comments', $token)) {
                 return new JsonResponse('Unauthorized', 401);
             }
-            $data = json_decode($request->getContent());
+            $data = (array) json_decode($request->getContent());
             $comment = new Comments();
-            $comment->setPseudo(htmlspecialchars($data->pseudo));
-            $comment->setContent(htmlspecialchars($data->content));
-            $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-            $comment->setIsModerated(0);
-            $comment->setPost($post);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($comment);
-            $entityManager->flush();
-            return new JsonResponse('Created', 201);
+            $form = $this->createForm(CommentsType::class, $comment);
+            $form->submit($data);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment->setSentAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $comment->setIsModerated(0);
+                $comment->setPost($post);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($comment);
+                $entityManager->flush();
+                return new JsonResponse('Created', 201);
+            }
+            return new JsonResponse('Unvalid form', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         return new JsonResponse('Method Not Allowed', 405);
     }

@@ -4,10 +4,12 @@ namespace App\Form;
 
 use App\Entity\Comments;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -73,6 +75,15 @@ class CommentsType extends AbstractType
                     'message'=>"Votre commentaire doit commencer par 2 lettres au moins"
                 ])
             ],
+        ])
+        ->add('nosiar', HiddenType::class,[
+            'required' => true,
+            'mapped'=>false,
+            'constraints' =>[
+                new Blank([
+                    'message'=>'Le champ doit rester vide.'
+                ])
+            ]
         ])
         ;
     }

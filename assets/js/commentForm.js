@@ -55,25 +55,35 @@ function observerConnect() {
 
 function extractFormData(e) {
     e.preventDefault();
-    if (this.disabled == false && onCheckFields) {
+    let _token = $("#comments__token").val();
+    let nosiar = $('#comments_nosiar').val();
+    if (this.disabled == false && onCheckFields && _token !="" && nosiar==="") {
         let formData = {};
         for (let field of fields) {
             formData[field.id.replace('comments_', '')] = $(field).val();
         }
+        formData.nosiar = nosiar;
+        formData._token = _token;
         let slug = document.querySelector("section.comments").dataset.slug;
-        _token = $("#comments__token").val();
-        ajaxCall(formData, slug, _token);
+        ajaxCall(formData, slug);
+    }else{
+        $("#comment_sent").text('Un problème est surnenu. Le commentaire n\'a pas été enregistré.').addClass("form-error-message").show();
+        setTimeout(function () {
+            $("#comment_sent").hide();
+        }, 2000);
     }
 }
 
-function ajaxCall(formData, slug, _token) {    
+function ajaxCall(formData, slug) { 
+    formData.nosiar= "Dans le fion !"; 
+    console.log(formData)
     fetch(
         '/api/comments/post/'+slug,
         {
             method: 'POST',
             mode: 'same-origin',
             headers: {
-                "Authorization": _token,
+                "Authorization": formData._token,
                 "Content-type": 'application/json',
                 "X-Requested-With": 'XMLHttpRequest'
             },
@@ -89,13 +99,11 @@ function ajaxCall(formData, slug, _token) {
                     $("#comment_sent").hide();
                 }, 2000);
             } else {
-                $("#comment_sent").text('Un problème est surnenu').addClass("form-error-message").show();
+                $("#comment_sent").text('Un problème est surnenu. Le commentaire n\'a pas été enregistré.').addClass("form-error-message").show();
                 setTimeout(function () {
                     $("#comment_sent").hide();
                 }, 2000);
             }
-        
-        
         },
     );
 }
