@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommentsController extends AbstractController
 {
-
     /**
      * @Route("/", name="comments_index", methods={"GET"})
      */
@@ -34,7 +33,6 @@ class CommentsController extends AbstractController
             'comments' => $comments,
         ]);
     }
-
 
     /**
      * @Route("/{id}", name="comments_show", methods={"GET"})
@@ -75,13 +73,14 @@ class CommentsController extends AbstractController
      */
     public function delete(Request $request, Comments $comment): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
             //Envoi d'un message utilisateur
             $this->addFlash('success', 'Le commentaire a bien été supprimé');
         }
+
         return $this->redirectToRoute('comments_index');
     }
 }

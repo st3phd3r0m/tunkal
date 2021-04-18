@@ -20,7 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController extends AbstractController
 {
-    private $postsRepository, $showsRepository, $commentsRepository;
+    private $postsRepository;
+    private $showsRepository;
+    private $commentsRepository;
 
     public function __construct(PostsRepository $postsRepository, ShowsRepository $showsRepository, CommentsRepository $commentsRepository)
     {
@@ -148,6 +150,7 @@ class HomeController extends AbstractController
             $this->addFlash('success', 'Commentaire enregistré');
 
             $_route = $request->get('_route');
+
             return $this->redirectToRoute($_route, [
                 'slug' => $post->getSlug(),
             ]);
@@ -155,11 +158,10 @@ class HomeController extends AbstractController
 
         return $this->render('home/post.html.twig', [
             'post' => $post,
-            'numbOfCommentsPages'=> $this->commentsRepository->getNumberOfPages($post->getSlug()),
+            'numbOfCommentsPages' => $this->commentsRepository->getNumberOfPages($post->getSlug()),
             'form' => $formComment->createView(),
         ]);
     }
-
 
     // /**
     //  * @Route("/news/{slug}", name="post", methods={"GET"})
@@ -176,12 +178,6 @@ class HomeController extends AbstractController
     //         'form' => $formComment->createView(),
     //     ]);
     // }
-
-
-
-
-
-    
 
     /**
      * Fonction qui initialise les metadonnées et le contenu de publications d' "usine".

@@ -12,8 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-
-    private $showsRepository, $commentsRepository, $postsRepository, $usersRepository, $linksRepository;
+    private $showsRepository;
+    private $commentsRepository;
+    private $postsRepository;
+    private $usersRepository;
+    private $linksRepository;
 
     public function __construct(ShowsRepository $showsRepository, CommentsRepository $commentsRepository, PostsRepository $postsRepository, UsersRepository $usersRepository, LinksRepository $linksRepository)
     {
@@ -23,6 +26,7 @@ class AdminController extends AbstractController
         $this->usersRepository = $usersRepository;
         $this->linksRepository = $linksRepository;
     }
+
     /**
      * @Route("/admin", name="admin")
      */

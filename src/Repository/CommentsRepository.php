@@ -29,12 +29,13 @@ class CommentsRepository extends ServiceEntityRepository
         $stmt = $conn->executeQuery($dql, [$post_slug, true], [ParameterType::STRING, ParameterType::BOOLEAN]);
         $result = $stmt->fetchOne();
         $conn->close();
-        return (int) ceil($result/$limit);
+
+        return (int) ceil($result / $limit);
     }
 
     public function getPage(int $page, string $post_slug, int $limit = 5)
     {
-        $offset = $limit * ($page-1);
+        $offset = $limit * ($page - 1);
         $dql = 'SELECT c.id, c.pseudo, c.content, c.sent_at FROM comments as c'
             .' INNER JOIN posts ON c.post_id = posts.id'
             .' WHERE posts.slug = ? AND c.is_moderated = ?'
@@ -47,13 +48,13 @@ class CommentsRepository extends ServiceEntityRepository
 
         return (object) [
             'data' => $result,
-            '_embedded' => (object)[
-                'post'=> $post_slug,
+            '_embedded' => (object) [
+                'post' => $post_slug,
                 'page' => $page,
                 'limit' => $limit,
                 'offset' => $page * $limit,
-                'delivered_at' => (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s')
-            ]
+                'delivered_at' => (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+            ],
         ];
     }
 

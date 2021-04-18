@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiCommentsController extends AbstractController
 {
@@ -28,7 +27,7 @@ class ApiCommentsController extends AbstractController
     public function listAction(string $slug, Request $request): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
-            $page = $request->query->get("page");
+            $page = $request->query->get('page');
             if (!is_numeric($page)) {
                 return new JsonResponse('Bad request : no page number specified', 400);
             }
@@ -36,8 +35,10 @@ class ApiCommentsController extends AbstractController
                 return new JsonResponse('', 204);
             }
             $comments = $this->commentsRepository->getPage($page, $slug);
+
             return new JsonResponse($comments);
         }
+
         return new JsonResponse('Method Not Allowed', 405);
     }
 
@@ -62,10 +63,13 @@ class ApiCommentsController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($comment);
                 $entityManager->flush();
+
                 return new JsonResponse('Created', 201);
             }
+
             return new JsonResponse('Unvalid form', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         return new JsonResponse('Method Not Allowed', 405);
     }
 
@@ -77,17 +81,19 @@ class ApiCommentsController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $token = $request->headers->get('authorization');
             $comment = $this->commentsRepository->find($id);
-            if (!$this->isCsrfTokenValid('delete' . $id, $token)) {
+            if (!$this->isCsrfTokenValid('delete'.$id, $token)) {
                 return new JsonResponse('Unauthorized', 401);
-            } elseif ($comment == null) {
+            } elseif (null == $comment) {
                 return new JsonResponse('Not found', 404);
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($comment);
                 $entityManager->flush();
+
                 return new JsonResponse('OK', 200);
             }
         }
+
         return new JsonResponse('Method Not Allowed', 405);
     }
 

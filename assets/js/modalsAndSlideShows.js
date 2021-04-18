@@ -31,20 +31,14 @@ function plusSlidesKey(e) {
     if (e.key === "ArrowRight") {
         $(this).off('keyup');
         slideIndex ++;
-        console.log(slideIndex);
         slideIndex = slideIndex % src.length;
-        console.log(slideIndex);
         slideIndex = (slideIndex<0) ? src.length+slideIndex : slideIndex;
-        console.log(slideIndex);
         showPicture();
     } else if(e.key === "ArrowLeft" ) {
         $(this).off('keyup');
         slideIndex --;
-        console.log(slideIndex);
         slideIndex = slideIndex % src.length;
-        console.log(slideIndex);
         slideIndex = (slideIndex<0) ? src.length+slideIndex : slideIndex;
-        console.log(slideIndex);
         showPicture();
     } else if(e.key === "Escape" ) {
         $(this).off('keyup');
@@ -62,10 +56,7 @@ function closeModal() {
 function plusSlides() {
     $(this).off('click');
     slideIndex += parseInt(this.dataset.plus);
-    console.log(slideIndex);
     slideIndex = slideIndex % src.length;
-    console.log(slideIndex);
     slideIndex = (slideIndex<0) ? src.length+slideIndex : slideIndex;
-    console.log(slideIndex);
     showPicture();
 }
