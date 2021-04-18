@@ -1,7 +1,7 @@
 
 ###> symfony/framework-bundle ###
 .env
-vraisite.env
+vraisite.text
 /.env
 .env.test
 /.env.test
@@ -9,6 +9,7 @@ vraisite.env
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
+/config/secrets/dev/dev.decrypt.private.php
 /public/bundles/
 /src/.preload.php
 /var/
