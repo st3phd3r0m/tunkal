@@ -37,3 +37,7 @@ yarn-error.log
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+/public/robots.txt
+/public/sitemap.xml
+/public/google24d059f959cf4baa.html
