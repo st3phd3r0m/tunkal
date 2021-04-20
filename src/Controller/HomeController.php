@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comments;
 use App\Entity\Posts;
+use App\Entity\Shows;
 use App\Form\CommentsType;
 use App\Repository\CommentsRepository;
 use App\Repository\LinksRepository;
@@ -11,6 +12,7 @@ use App\Repository\PostsRepository;
 use App\Repository\ShowsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,22 +111,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/news/{slug}", name="post", methods={"GET"})
-    //  * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET"})
-    //  */
-    // public function showPost(Posts $post): Response
-    // {
-    //     //Création formulaire commentaire
-    //     $formComment = $this->createForm(CommentsType::class);
-
-    //     return $this->render('home/post.html.twig', [
-    //         'post' => $post,
-    //         'numbOfCommentsPages'=> $this->commentsRepository->getNumberOfPages($post->getSlug()),
-    //         'form' => $formComment->createView(),
-    //     ]);
-    // }
-
     /**
      * @Route("/news/{slug}", name="post", methods={"GET", "POST"})
      * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET", "POST"})
@@ -164,19 +150,11 @@ class HomeController extends AbstractController
     }
 
     // /**
-    //  * @Route("/news/{slug}", name="post", methods={"GET"})
-    //  * @Route("/previous/concerts/{slug}", name="pastConcert", methods={"GET"})
+    //  * @Route("/upcoming/concerts/{slug}", name="upcomingShow", methods={"GET"})
     //  */
-    // public function showPost(Posts $post): Response
+    // public function showOneShow(Shows $show): JsonResponse
     // {
-    //     //Instanciation de Comments, création formulaire commentaire
-    //     $comment = new Comments();
-    //     $formComment = $this->createForm(CommentsType::class, $comment);
-
-    //     return $this->render('home/post.html.twig', [
-    //         'post' => $post,
-    //         'form' => $formComment->createView(),
-    //     ]);
+    //     return new JsonResponse((array) $show);
     // }
 
     /**

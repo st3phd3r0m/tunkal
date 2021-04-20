@@ -13,13 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/shows")
- */
 class ShowsController extends AbstractController
 {
     /**
-     * @Route("/", name="shows_index", methods={"GET"})
+     * @Route("/admin/shows/", name="shows_index", methods={"GET"})
      */
     public function index(ShowsRepository $showsRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -37,7 +34,7 @@ class ShowsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="shows_new", methods={"GET","POST"})
+     * @Route("/admin/shows/new", name="shows_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -78,7 +75,7 @@ class ShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="shows_show", methods={"GET"})
+     * @Route("/admin/shows/{id}", name="shows_show", methods={"GET"})
      */
     public function show(Shows $show): Response
     {
@@ -88,7 +85,7 @@ class ShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="shows_edit", methods={"GET","POST"})
+     * @Route("/admin/shows/{id}/edit", name="shows_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Shows $show, Filesystem $filesystem): Response
     {
@@ -127,7 +124,7 @@ class ShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="shows_delete", methods={"DELETE"})
+     * @Route("/admin/shows/{id}", name="shows_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Shows $show, Filesystem $filesystem): Response
     {
@@ -155,22 +152,17 @@ class ShowsController extends AbstractController
     }
 
     /**
-     * @Route("/give/shows", name="give_shows", methods={"GET"})
+     * @Route("/admin/api/shows", name="give_shows", methods={"GET"})
      */
     public function giveShows(Request $request, ShowsRepository $showsRepository): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
-            $showsCollection = $showsRepository->findAll();
-            $shows = [];
-            foreach ($showsCollection as $value) {
-                $shows[] = [
-                    'id' => $value->getId(),
-                    'title' => $value->getTitle(),
-                    'slug' => $value->getSlug(),
-                    ];
+            $token = $request->headers->get('authorization');
+            if (!$this->isCsrfTokenValid('links', $token)) {
+                return new JsonResponse('Unauthorized', 401);
             }
-
-            return new JsonResponse(json_encode($shows), 200);
+            $shows = $showsRepository->getShows();
+            return new JsonResponse($shows, 200);
         }
 
         return new JsonResponse('Méthode non-autorisée', 405);

@@ -58,26 +58,6 @@ class LinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $link->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-
-            if (
-                '/show/' == $form->get('type')->getData() &&
-                !empty($request->request->get('show'))
-            ) {
-                $link->setHyperlink('/previous/concerts/'.$request->request->get('show'));
-            } elseif (
-                '/post/' == $form->get('type')->getData() &&
-                !empty($request->request->get('post'))
-            ) {
-                $link->setHyperlink('/news/'.$request->request->get('post'));
-            } elseif (
-                'external' == $form->get('type')->getData() &&
-                !empty($request->request->get('externalLink'))
-            ) {
-                $link->setHyperlink($request->request->get('externalLink'));
-            } else {
-                $link->setHyperlink($form->get('type')->getData());
-            }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($link);
             $entityManager->flush();
@@ -113,26 +93,6 @@ class LinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $link->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
-
-            if (
-                '/show/' == $form->get('type')->getData() &&
-                !empty($request->request->get('show'))
-            ) {
-                $link->setHyperlink($form->get('type')->getData().$request->request->get('show'));
-            } elseif (
-                '/post/' == $form->get('type')->getData() &&
-                !empty($request->request->get('post'))
-            ) {
-                $link->setHyperlink($form->get('type')->getData().$request->request->get('post'));
-            } elseif (
-                'external' == $form->get('type')->getData() &&
-                !empty($request->request->get('externalLink'))
-            ) {
-                $link->setHyperlink($request->request->get('externalLink'));
-            } else {
-                $link->setHyperlink($form->get('type')->getData());
-            }
-
             $this->getDoctrine()->getManager()->flush();
 
             //Envoi d'un message utilisateur

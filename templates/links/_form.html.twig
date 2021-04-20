@@ -10,29 +10,42 @@
 	<input class="form-group w-100" name="externalLink" id="externalLink" value="{{ (link.type == 'external') ? link.hyperlink : '' }}">
 </div>
 
-<div class="form-group" id="shows-fields-list" data-url-path="{{ absolute_url(path('give_shows')) }}">
-	<label for="select_show">Sélectionnez un concert</label>
-	<select class="form-group w-100" name="show" id="select_show">
-		<option value="{{ (link.type == '/show/') ? link.hyperlink |replace({'/show/': ''}) : '' }}">
-			{{ (link.type == '/show/') ? link.title : '' }}
+<div class="form-group" id="upcoming-concerts-fields-list" data-url-path="{{ absolute_url(path('give_shows')) }}">
+	<label for="select_upcoming_concert">Sélectionnez un concert</label>
+	<select class="form-group w-100" name="upcoming-concert" id="select_upcoming_concert">
+		<option value="{{ (link.type == '/upcoming/concerts/') ? link.hyperlink |replace({'/upcoming/concerts/': ''}) : '' }}">
+			{{ (link.type == '/upcoming/concerts/') ? link.title : '' }}
 		</option>
 	</select>
 </div>
 
-<div class="form-group" id="posts-fields-list" data-url-path="{{ absolute_url(path('give_posts')) }}">
-	<label for="select_post">Sélectionnez un article</label>
-	<select class="form-group w-100" name="post" id="select_post">
-		<option value="{{ (link.type == '/post/') ? link.hyperlink |replace({'/post/': ''}) : '' }}">
-			{{ (link.type == '/post/') ? link.title : '' }}
+<div class="form-group" id="previous-concerts-fields-list" data-url-path="{{ absolute_url(path('give_posts')) }}">
+	<label for="select_previous_concert">Sélectionnez un concert passé</label>
+	<select class="form-group w-100" name="previous-concerts" id="select_previous_concert">
+		<option value="{{ (link.type == '/previous/concerts/') ? link.hyperlink |replace({'/previous/concerts/': ''}) : '' }}">
+			{{ (link.type == '/previous/concerts/') ? link.title : '' }}
 		</option>
 	</select>
 </div>
+
+<div class="form-group" id="news-fields-list" data-url-path="{{ absolute_url(path('give_posts')) }}">
+	<label for="select_news">Sélectionnez un article</label>
+	<select class="form-group w-100" name="news" id="select_news">
+		<option value="{{ (link.type == '/news/') ? link.hyperlink |replace({'/news/': ''}) : '' }}">
+			{{ (link.type == '/news/') ? link.title : '' }}
+		</option>
+	</select>
+</div>
+
+
 
 {{ form_row(form.title) }}
 
 {{ form_row(form.alt) }}
 
 {{ form_row(form.content) }}
+
+{{ form_row(form.hyperlink) }}
 
 {{ form_row(form.imageFile) }}
 

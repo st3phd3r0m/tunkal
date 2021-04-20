@@ -27,25 +27,6 @@ class LinksType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
-                'label' => 'Titre du lien (Visible lors du survol de la souris sur le lien) : ',
-
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un titre.',
-                    ]),
-                ],
-            ])
-            ->add('content', TextType::class, [
-                'required' => true,
-                'label' => 'Texte du lien (Contenu directement visible à l\'écran) : ',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir le contenu du lien',
-                    ]),
-                ],
-            ])
             ->add('position', ChoiceType::class, [
                 'label' => 'Où voulez-vous placer le lien ?',
                 'choices' => [
@@ -71,25 +52,49 @@ class LinksType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('title', TextType::class, [
+                'required' => true,
+                'label' => 'Titre du lien (Visible lors du survol de la souris sur le lien) : ',
+
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un titre.',
+                    ]),
+                ],
+            ])
+            ->add('content', TextType::class, [
+                'required' => true,
+                'label' => 'Texte du lien (Contenu directement visible à l\'écran) : ',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le contenu du lien',
+                    ]),
+                ],
+            ])
             ->add('type', ChoiceType::class, [
                 'required' => true,
                 'label' => 'Type de lien à ajouter',
                 'choices' => [
-                    // 'Concert' => '/show/',
-                    // 'Article' => '/post/',
                     'Lien sortant' => 'external',
-                    'Page des News' => '/news/',
+                    'Page des articles' => '/news/',
                     'Page des concerts passés' => '/previous/concerts/',
                     'Page des concerts à venir' => '/upcoming/concerts/',
                 ],
-                'data' => $options['data']->getType(), //'/accueil',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez choisir un type de lien',
                     ]),
                 ],
             ])
-            // ->add('hyperlink')
+            ->add('hyperlink', TextType::class, [
+                'required' => true,
+                'label' => 'Url du lien',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir l\'url du lien',
+                    ]),
+                ],
+            ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'label' => 'Choisir une icône',
@@ -125,7 +130,7 @@ class LinksType extends AbstractType
                 ],
             ])
             ->add('uploaded_at', DateType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Date téléchargement vidéo',
                 'widget' => 'single_text',
                 'constraints' => [

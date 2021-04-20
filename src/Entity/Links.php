@@ -258,7 +258,7 @@ class Links
         return $this->uploaded_at;
     }
 
-    public function setUploadedAt(\DateTimeInterface $uploaded_at): self
+    public function setUploadedAt(?\DateTimeInterface $uploaded_at): self
     {
         $this->uploaded_at = $uploaded_at;
 

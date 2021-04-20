@@ -13,13 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/posts")
- */
 class PostsController extends AbstractController
 {
     /**
-     * @Route("/", name="posts_index", methods={"GET"})
+     * @Route("/admin/posts/", name="posts_index", methods={"GET"})
      */
     public function index(PostsRepository $postsRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -37,7 +34,7 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="posts_new", methods={"GET","POST"})
+     * @Route("/admin/posts/new", name="posts_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -84,7 +81,7 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="posts_show", methods={"GET"})
+     * @Route("/admin/posts/{id}", name="posts_show", methods={"GET"})
      */
     public function show(Posts $post): Response
     {
@@ -94,7 +91,7 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="posts_edit", methods={"GET","POST"})
+     * @Route("/admin/posts/{id}/edit", name="posts_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Posts $post, Filesystem $filesystem): Response
     {
@@ -180,7 +177,7 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="posts_delete", methods={"DELETE"})
+     * @Route("/admin/posts/{id}", name="posts_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Posts $post, Filesystem $filesystem): Response
     {
@@ -225,22 +222,18 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/give/posts", name="give_posts", methods={"GET"})
+     * @Route("/admin/api/posts", name="give_posts", methods={"GET"})
      */
     public function givePosts(Request $request, PostsRepository $postsRepository): JsonResponse
     {
         if ($request->isXmlHttpRequest()) {
-            $postsCollection = $postsRepository->findAll();
-            $posts = [];
-            foreach ($postsCollection as $value) {
-                $posts[] = [
-                    'id' => $value->getId(),
-                    'title' => $value->getTitle(),
-                    'slug' => $value->getSlug(),
-                    ];
+            $token = $request->headers->get('authorization');
+            if (!$this->isCsrfTokenValid('links', $token)) {
+                return new JsonResponse('Unauthorized', 401);
             }
-
-            return new JsonResponse(json_encode($posts), 200);
+            $isPastConcert= (bool) $request->query->get('isPastConcert');
+            $posts = $postsRepository->getPosts($isPastConcert);
+            return new JsonResponse($posts, 200);
         }
 
         return new JsonResponse('Méthode non-autorisée', 405);

@@ -41,3 +41,17 @@ yarn-error.log
 /public/robots.txt
 /public/sitemap.xml
 /public/google24d059f959cf4baa.html
+config/secrets/dev/dev.APP_SECRET.1cf811.php
+config/secrets/dev/dev.dbname.4cd4a4.php
+config/secrets/dev/dev.encrypt.public.php
+config/secrets/dev/dev.host.67b3db.php
+config/secrets/dev/dev.list.php
+config/secrets/dev/dev.secret.5ebe22.php
+config/secrets/dev/dev.user.ee11cb.php
+config/secrets/prod/prod.APP_SECRET.1cf811.php
+config/secrets/prod/prod.dbname.4cd4a4.php
+config/secrets/prod/prod.encrypt.public.php
+config/secrets/prod/prod.host.67b3db.php
+config/secrets/prod/prod.list.php
+config/secrets/prod/prod.secret.5ebe22.php
+config/secrets/prod/prod.user.ee11cb.php

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Posts;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,29 @@ class PostsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Posts::class);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $isPastConcert
+     * @return object
+     */
+    public function getPosts(bool $isPastConcert): object
+    {
+        $dql = 'SELECT p.id, p.title, p.slug FROM posts as p'
+            .' WHERE p.is_past_concert = ?';
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->executeQuery($dql, [$isPastConcert], [ParameterType::BOOLEAN]);
+        $result = $stmt->fetchAllAssociative();
+        $conn->close();
+
+        return (object) [
+            'data' => $result,
+            '_embedded' => (object) [
+                'delivered_at' => (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+            ],
+        ];
     }
 
     /**

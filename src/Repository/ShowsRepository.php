@@ -19,6 +19,22 @@ class ShowsRepository extends ServiceEntityRepository
         parent::__construct($registry, Shows::class);
     }
 
+    public function getShows(): object
+    {
+        $dql = 'SELECT s.id, s.title, s.slug FROM shows as s';
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->executeQuery($dql);
+        $result = $stmt->fetchAllAssociative();
+        $conn->close();
+
+        return (object) [
+            'data' => $result,
+            '_embedded' => (object) [
+                'delivered_at' => (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+            ],
+        ];
+    }
+
     /**
      * @return Shows[] Returns an array of Shows objects
      */
