@@ -231,8 +231,9 @@ class PostsController extends AbstractController
             if (!$this->isCsrfTokenValid('links', $token)) {
                 return new JsonResponse('Unauthorized', 401);
             }
-            $isPastConcert= (bool) $request->query->get('isPastConcert');
+            $isPastConcert = (bool) $request->query->get('isPastConcert');
             $posts = $postsRepository->getPosts($isPastConcert);
+
             return new JsonResponse($posts, 200);
         }
 

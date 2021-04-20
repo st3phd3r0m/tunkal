@@ -24,7 +24,7 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return Links[]
      */

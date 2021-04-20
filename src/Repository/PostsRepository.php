@@ -21,10 +21,7 @@ class PostsRepository extends ServiceEntityRepository
     }
 
     /**
-     * Undocumented function
-     *
-     * @param boolean $isPastConcert
-     * @return object
+     * Undocumented function.
      */
     public function getPosts(bool $isPastConcert): object
     {

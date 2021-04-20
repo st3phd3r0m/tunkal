@@ -29,7 +29,6 @@ class AdminController extends AbstractController
     }
 
     /**
-     *
      * @Route("/admin", name="admin")
      */
     public function index(): Response

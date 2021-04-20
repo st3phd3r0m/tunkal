@@ -162,6 +162,7 @@ class ShowsController extends AbstractController
                 return new JsonResponse('Unauthorized', 401);
             }
             $shows = $showsRepository->getShows();
+
             return new JsonResponse($shows, 200);
         }
 

@@ -17,66 +17,77 @@ class Posts
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @var string
      */
     private $metaTitle;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @var string
      */
     private $metaDescription;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @var string
      */
     private $content;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     *
      * @var array<int, string>
      */
     private $keywords = [];
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     *
      * @var array<int, string>
      */
     private $metaKeywords = [];
 
     /**
      * @ORM\OneToMany(targetEntity=Images::class, mappedBy="posts", cascade={"persist"})
+     *
      * @var Collection|Images[]
      */
     private $images;
 
     /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="post")
+     *
      * @var Collection|Comments[]
      */
     private $comments;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @var \DateTimeInterface
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="boolean")
+     *
      * @var bool
      */
     private $is_past_concert;
@@ -84,6 +95,7 @@ class Posts
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=255, unique=true, nullable=true)
+     *
      * @var string
      */
     private $slug;
@@ -148,7 +160,7 @@ class Posts
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return array<int, string>|null
      */
@@ -158,10 +170,9 @@ class Posts
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param array<int, string>|null $keywords
-     * @return self
      */
     public function setKeywords(?array $keywords): self
     {
@@ -171,7 +182,7 @@ class Posts
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return array<int, string>|null
      */
@@ -181,10 +192,9 @@ class Posts
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param array<int, string>|null $metaKeywords
-     * @return self
      */
     public function setMetaKeywords(?array $metaKeywords): self
     {

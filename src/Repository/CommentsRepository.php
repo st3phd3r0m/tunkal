@@ -21,11 +21,7 @@ class CommentsRepository extends ServiceEntityRepository
     }
 
     /**
-     * Undocumented function
-     *
-     * @param string $post_slug
-     * @param integer $limit
-     * @return integer
+     * Undocumented function.
      */
     public function getNumberOfPages(string $post_slug, int $limit = 5): int
     {
@@ -41,12 +37,7 @@ class CommentsRepository extends ServiceEntityRepository
     }
 
     /**
-     * Undocumented function
-     *
-     * @param integer $page
-     * @param string $post_slug
-     * @param integer $limit
-     * @return object
+     * Undocumented function.
      */
     public function getPage(int $page, string $post_slug, int $limit = 5): object
     {
