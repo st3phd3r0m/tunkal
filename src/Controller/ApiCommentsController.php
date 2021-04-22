@@ -53,6 +53,9 @@ class ApiCommentsController extends AbstractController
                 return new JsonResponse('Unauthorized', 401);
             }
             $data = (array) json_decode($request->getContent());
+            foreach ($data as $key => $value) {
+                $data[$key] = htmlspecialchars($value);
+            }
             $comment = new Comments();
             $form = $this->createForm(CommentsType::class, $comment);
             $form->submit($data);

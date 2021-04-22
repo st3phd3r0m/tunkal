@@ -17,9 +17,11 @@ use Symfony\Component\Validator\Constraints\Regex;
 class CommentsType extends AbstractType
 {
     /**
-     * Undocumented function.
+     * Undocumented function
      *
+     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
+     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -56,7 +58,7 @@ class CommentsType extends AbstractType
             'required' => true,
             'label' => 'Votre commentaire',
             'attr' => [
-                'minlength' => 10,
+                'minlength' => 2,
                 'maxlength' => 240,
                 'pattern' => '[A-Za-z]{2,240}.{0,}',
                 'title' => 'Votre commentaire doit comporter entre 2 et 240 carctères et commencer par 2 lettres minimum',
@@ -66,7 +68,7 @@ class CommentsType extends AbstractType
                     'message' => 'Commentaire requis',
                 ]),
                 new Length([
-                    'min' => 10,
+                    'min' => 2,
                     'max' => 240,
                     'minMessage' => 'Votre commentaire doit comporter au moins {{ limit }}
                     caractères.',

@@ -21,6 +21,8 @@ function checkField(elementObject) {
         return false;
     } else if (str.length < minLength) {
         return false;
+    } else if ( /[&<>"']/.test(str) ) {
+        return false;
     } else if (/^[a-zA-Z]{2,240}/.test(str)) {
         return true;
     }
@@ -57,16 +59,16 @@ function extractFormData(e) {
     e.preventDefault();
     let _token = $("#comments__token").val();
     let nosiar = $('#comments_nosiar').val();
-    if (this.disabled == false && onCheckFields && _token !="" && nosiar==="") {
+    if (this.disabled == false && onCheckFields && _token != "" && nosiar === "") {
         let formData = {};
         for (let field of fields) {
-            formData[field.id.replace('comments_', '')] = $(field).val();
+            formData[field.id.replace('comments_', '')] = escapeHtml($(field).val());
         }
-        formData.nosiar = nosiar;
-        formData._token = _token;
+        formData.nosiar = escapeHtml(nosiar);
+        formData._token = escapeHtml(_token);
         let slug = document.querySelector("section.comments").dataset.slug;
         ajaxCall(formData, slug);
-    }else{
+    } else {
         $("#comment_sent").text('Un problème est surnenu. Le commentaire n\'a pas été enregistré.').addClass("form-error-message").show();
         setTimeout(function () {
             $("#comment_sent").hide();
@@ -76,7 +78,7 @@ function extractFormData(e) {
 
 function ajaxCall(formData, slug) {
     fetch(
-        '/api/comments/post/'+slug,
+        '/api/comments/post/' + slug,
         {
             method: 'POST',
             mode: 'same-origin',
@@ -102,6 +104,19 @@ function ajaxCall(formData, slug) {
                     $("#comment_sent").hide();
                 }, 2000);
             }
+            onCheckFields();
         },
     );
+}
+
+function escapeHtml(str) {
+    let map =
+    {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return str.replace(/[&<>"']/g, function (m) { return map[m]; });
 }
