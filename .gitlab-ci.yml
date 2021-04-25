@@ -6,5 +6,8 @@ deploy-master:
     - apt-get update -qy
     - apt-get install -y lftp
     script:
-    #- lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -e -R public ~/www; quit"
-    - lftp -e "open $NOM_HOTE; $IDENTIFIANT $MOT_DE_PASSE; mirror -R public ~/www; quit"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cat $KNOWN_HOST > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -e -R public ~/www; quit"
