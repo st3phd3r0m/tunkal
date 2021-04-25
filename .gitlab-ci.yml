@@ -1,0 +1,10 @@
+deploy-master:
+    stage: deploy
+    only:
+    - master
+    script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cat $KNOWN_HOST > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -e -R public ~/www; quit"
