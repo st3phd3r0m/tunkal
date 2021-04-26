@@ -10,4 +10,4 @@ deploy-master:
     - chmod 700 ~/.ssh
     - cat $KNOWN_HOST > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -R -x adminlte -x bundles -x images -x media public/ tunkal/public/; mirror -R -x bin -x config -x node_modules -x public -x var -x vendor / tunkal/; rmdir tunkal/var; quit"
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -R -x adminlte -x bundles -x images -x media public/ tunkal/public/; rmdir tunkal/var/; quit"
