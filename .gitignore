@@ -25,9 +25,6 @@ vraisite.text
 ###> liip/imagine-bundle ###
 /public/media/cache/
 /public/images/
-/public/robots.txt
-/public/sitemap.xml
-/public/google24d059f959cf4baa.html
 ###< liip/imagine-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
