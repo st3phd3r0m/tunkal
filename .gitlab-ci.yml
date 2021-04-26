@@ -10,4 +10,4 @@ deploy-master:
     - chmod 700 ~/.ssh
     - cat $KNOWN_HOST > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -R -x public/adminlte -x public/bundles -x public/images -x public/media -x .htaccess -x index.php public test; quit"
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -R -X public/adminlte -X public/bundles -X public/images -X public/media -X .htaccess -X index.php public test; quit"
