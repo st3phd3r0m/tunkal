@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+.gitlab-ci.yml
 .env
 vraisite.text
 /.env
@@ -26,7 +27,6 @@ vraisite.text
 /public/media/cache/
 /public/images/
 /public/.htaccess
-.gitlab-ci.yml
 ###< liip/imagine-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
