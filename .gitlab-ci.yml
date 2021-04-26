@@ -10,4 +10,4 @@ deploy-master:
     - chmod 700 ~/.ssh
     - cat $KNOWN_HOST > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "!ls"
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "quit"
