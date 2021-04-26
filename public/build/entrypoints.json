@@ -1,0 +1,62 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/1.88cbb8b2.js",
+        "/build/app.d1e0359a.js"
+      ],
+      "css": [
+        "/build/app.bca26b63.css"
+      ]
+    },
+    "loadvideo": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/loadvideo.6f5924d2.js"
+      ]
+    },
+    "appComments": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/1.88cbb8b2.js",
+        "/build/appComments.bb093c0c.js"
+      ]
+    },
+    "adminLink": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/1.88cbb8b2.js",
+        "/build/adminLink.c9af8149.js"
+      ]
+    },
+    "adminShows": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/2.9e63d479.js",
+        "/build/adminShows.3fed1628.js"
+      ]
+    },
+    "adminPosts": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/1.88cbb8b2.js",
+        "/build/adminPosts.e63f9b44.js"
+      ]
+    },
+    "adminDeleteComments": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.cf60d32b.js",
+        "/build/1.88cbb8b2.js",
+        "/build/adminDeleteComments.f4d03097.js"
+      ]
+    }
+  }
+}
