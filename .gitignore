@@ -25,6 +25,8 @@ vraisite.text
 ###> liip/imagine-bundle ###
 /public/media/cache/
 /public/images/
+/public/.htaccess
+.gitlab-ci.yml
 ###< liip/imagine-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
