@@ -1,6 +1,6 @@
 
 ###> symfony/framework-bundle ###
-# .gitlab-ci.yml
+.gitlab-ci.yml
 .env
 vraisite.text
 /.env
