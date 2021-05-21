@@ -1,0 +1,13 @@
+deploy-master:
+    stage: deploy
+    only:
+    - master
+    before_script:
+    - apt-get update -qy
+    - apt-get install -y lftp
+    script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cat $KNOWN_HOST > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - lftp sftp://$IDENTIFIANT:$MOT_DE_PASSE@$NOM_HOTE -e "mirror -R -x adminlte -x bundles -x images -x media -x .htaccess public/ tunkal/public/; mirror -R src/ tunkal/src/; mirror -R templates/ tunkal/templates/; mirror -R translations/ tunkal/translations/; rm -r tunkal/var/; quit"
