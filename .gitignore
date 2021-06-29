@@ -1,9 +1,12 @@
 
 ###> symfony/framework-bundle ###
 # .gitlab-ci.yml
-.env
 vraisite.text
-/.env
+docker-compose.yml
+DockerfileNode
+DockerfilePHP-FPM
+/config/php.ini-production
+/src/DataFixtures/UsersFixtures.php
 .env.test
 /.env.test
 /.env.local
