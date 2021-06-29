@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints\Regex;
 class CommentsType extends AbstractType
 {
     /**
-     * Undocumented function
      *
      * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
