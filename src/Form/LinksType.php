@@ -18,7 +18,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class LinksType extends AbstractType
 {
     /**
-     * Undocumented function.
      *
      * @param array<string, mixed> $options
      */

@@ -12,8 +12,6 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class ImagesType extends AbstractType
 {
     /**
-     * Undocumented function.
-     *
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
