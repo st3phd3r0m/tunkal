@@ -30,6 +30,7 @@ DockerfilePHP-FPM
 /public/media/cache/
 /public/images/
 /public/.htaccess
+/public/adminlte
 ###< liip/imagine-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
