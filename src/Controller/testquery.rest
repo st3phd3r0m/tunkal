@@ -1,2 +1,0 @@
-GET  http://tunkal.test/previous/concerts/photos-la-peniche-cancale-14-novembre-2019-dijon HTTP/1.1
-
